@@ -1,0 +1,161 @@
+<template>
+  <div class="row">
+    <div v-if="loading" class="loading">
+      <label class="align-self-center">
+        <div class="sk-chase">
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+        </div>
+      </label>
+    </div>
+    <div v-if="!loading" class="col fadeMe">
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <div class="card-title my-2">
+            <h5>Data pengembalian</h5>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-no-border-top text-gray-900">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th v-if="$auth.user().role == 2">Nama user</th>
+                <th>judul buku</th>
+                <th>Tanggal pinjam</th>
+                <th>Tanggal kembali</th>
+                <th>Denda</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(kembali, i) in data_pengembalian.data" v-bind:key="i">
+                <td>{{ data_pengembalian.from + i }}</td>
+                <td v-if="$auth.user().role == 2">
+                  <a
+                    href
+                    data-toggle="modal"
+                    :data-target="'#info__user' + kembali.id_user"
+                    >{{ kembali.user.name }}</a
+                  >
+                </td>
+                <td>
+                  <a
+                    href
+                    data-toggle="modal"
+                    :data-target="'#info__buku' + kembali.id_buku"
+                    >{{ kembali.buku.judul_buku }}</a
+                  >
+                </td>
+                <td>{{ kembali.tanggal_pinjam | moment("DD MMMM YYYY") }}</td>
+                <td>
+                  <!-- prettier-ignore -->
+                  <a
+                    href="#"
+                    @click.prevent=""
+                    type="button"
+                    data-toggle="popover"
+                    data-html="true"
+                    data-placement="bottom"
+                    data-title="
+                      Keterangan
+                    "
+                    :data-content="
+                    'Dikembalikan: ' + moment(kembali.dikembalikan_tanggal).format('DD MMMM YYYY')
+                    + '<br/>' + 
+                    'Terlambat: ' + kembali.telat + ' Hari'
+                    "
+                  >
+                    {{ kembali.tanggal_kembali | moment("DD MMMM YYYY") }}
+                  </a>
+                </td>
+                <td>Rp.{{ kembali.denda }},-</td>
+              </tr>
+            </tbody>
+          </table>
+          <modalUser
+            v-for="(info_user, j) in data_pengembalian.data"
+            :key="'info_user' + j"
+            :parentData="info_user"
+          />
+          <div class="modal-info" v-for="(data, h) in data_pengembalian.data">
+            <modalInfo
+              :key="'info_buku' + h"
+              v-bind:isPeminjaman="true"
+              :parentData="data.buku"
+            />
+          </div>
+          <modalTanggal
+            v-for="(info_tanggal, k) in data_pengembalian.data"
+            :key="'info_tanggal' + k"
+            :parentData="info_tanggal"
+          ></modalTanggal>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { searchMixin } from "../mixins/searchMixin.js";
+import modalUser from "./peminjaman__modal--user.vue";
+import modalInfo from "./modal-info.vue";
+import modalTanggal from "./modal-tanggal.vue";
+
+export default {
+  mixins: [searchMixin],
+
+  components: {
+    modalUser,
+    modalInfo,
+    modalTanggal
+  },
+
+  data() {
+    return {
+      data_pengembalian: {},
+      loading: false
+    };
+  },
+
+  mounted() {
+    this.fetchPengembalian();
+  },
+
+  updated: function() {
+    $(function() {
+      $('[data-toggle="popover"]').popover();
+    });
+
+    $("body").on("click", function(e) {
+      $("[data-toggle=popover]").each(function() {
+        // hide any open popovers when the anywhere else in the body is clicked
+        if (
+          !$(this).is(e.target) &&
+          $(this).has(e.target).length === 0 &&
+          $(".popover").has(e.target).length === 0
+        ) {
+          $(this).popover("hide");
+        }
+      });
+    });
+  },
+
+  methods: {
+    fetchPengembalian() {
+      this.loading = true;
+      axios
+        .get("api/pengembalian", {
+          // run something here
+          params: {}
+        })
+        .then(response => {
+          this.data_pengembalian = response.data.data_pengembalian;
+          this.loading = false;
+        });
+    }
+  }
+};
+</script>
