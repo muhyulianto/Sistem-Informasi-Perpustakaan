@@ -1,7 +1,8 @@
 # Sistem-Informasi-Perpustakaan
 
-Sistem informasi perpustakaan ini berisi beberapa fitur antara lain, pendataan buku,
-pencatatan peminjaman buku, pencatatan pengembalian buku dan pembuatan laporan. 
+Sistem Informasi Perpustakaan adalah sistem yang dibuat untuk memudahkan petugas perpustakaan dalam mengelola suatu perpustakaan.
+Semua di proses secara komputerisasi yaitu digunakannya suatu software tertentu seperti software pengolah database.
+Petugas perpustakaan dapat selalu memonitor tentang ketersediaan buku, daftar buku baru, peminjaman buku dan pengembalian buku.
 Fungsi interaktif yang dimiliki sistem ini adalah fasilitas pencarian buku berdasarkan beberapa kategori
 yaitu judul buku, penerbit, tahun terbit, pengarang, atau tempat buku serta informasi buku lain yang berhubungan
 dengan buku yang dicari oleh pengunjung perpustakaan agar buku mudah ditemukan.
@@ -26,10 +27,14 @@ Anda bisa baca selengkapnya disini <a href="https://laravel.com/docs/5.5#server-
 
 ### Cara penginstallan
 ```
-1. Clone repository ini dengan cara "git clone https://github.com/muhyulianto/Sistem-Informasi-Perpustakaan.git".
+1. Clone repository ke local direktori anda.
 2. Masuk ke direktori penginstallan.
-3. Buka terminal / cmd ketik "composer install", tekan enter.
-4. setting file .env sesuai database anda.
+3. Buka terminal / cmd ketik "composer install" dan tekan enter untuk menginstall dependency php.
+4. Ketik "npm install" untuk menginstall package javascript.
+5. Setting file .env sesuai database anda.
+6. Jalankan sistem di browser.
+7. Jika ada error jalankan "php artisan:key generate" dan
+8. "php artisan jwt:secret".
 ```
 
 ## Built With

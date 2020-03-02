@@ -13,7 +13,7 @@
       <!--</label>-->
     <!--</div>-->
     <div class="fadeMe">
-      <div class="row">
+      <div v-if="$auth.check(['roles', 2])" class="row">
         <div class="col-md-3">
           <div class="card bg-info text-white shadow-sm mb-4">
             <div class="card-header bg-info">
@@ -62,7 +62,7 @@
       <div class="col">
         <div class="card shadow-sm">
           <div class="card-body">
-            Hohohoho
+          Selamat datang <a href="#">{{ $auth.user().name }}</a>
           </div>
         </div>
       </div>

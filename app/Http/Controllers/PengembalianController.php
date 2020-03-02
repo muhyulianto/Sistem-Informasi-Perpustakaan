@@ -14,13 +14,32 @@ class PengembalianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $Pengembalian = Pengembalian::with(['user', 'buku'])->orderBy('dikembalikan_tanggal', 'desc')->paginate(10);
+        if ($request->has('id')){
+            $pengembalian = Pengembalian::with(['user', 'buku'])->where('id_user', $request->id)->orderBy('tanggal_pinjam', 'desc')->paginate(10);
+            return response()->json([
+                'data_pengembalian' => $pengembalian
+            ]);
+        } else if ($request->has('search_query')) {
+            $pengembalian = pengembalian::with(['user', 'buku'])
+                ->whereHas('user', function($query) use ($request){
+                    $query->where('name', 'like', "%{$request->search_query}%"); 
+                })->orWhereHas('buku', function ($query) use ($request) {
+                    $query->where('judul_buku', 'like',  "%{$request->search_query}%");
+                })->orderBy('tanggal_pinjam', 'desc')->paginate(10);
+
+          return response()->json([
+              'data_pengembalian' => $pengembalian
+          ]);
+        }
+
+        $pengembalian = pengembalian::with(['user', 'buku'])->orderBy('tanggal_pinjam', 'desc')->paginate(10);
 
         return response()->json([
-            'data_pengembalian' => $Pengembalian
+            'data_pengembalian' => $pengembalian
         ]);
+
     }
 
     /**

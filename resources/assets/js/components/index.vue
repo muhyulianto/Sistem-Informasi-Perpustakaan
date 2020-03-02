@@ -3,7 +3,7 @@
     <div class="card mt-5 shadow-sm">
       <div class="card-header">
         <div class="card-title">
-          <h3>Temukan bacaan mu</h3>
+          <h3>Perpustakaan</h3>
         </div>
       </div>
       <div class="card-body">

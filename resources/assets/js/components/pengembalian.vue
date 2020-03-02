@@ -13,12 +13,32 @@
       </label>
     </div>
     <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm">
+      <div class="card shadow-sm mb-4">
         <div class="card-header">
-          <div class="card-title my-2">
-            <h5>Data pengembalian</h5>
-          </div>
+          <h5 class="card-title mb-0 py-1">Data peminjaman</h5>
         </div>
+        <div class="card-body">
+          <form
+            v-on:submit.prevent="
+              fetchPengembalian({ search_query: search_query })
+            "
+            class="input-group"
+          >
+            <input
+              type="search"
+              class="form-control"
+              v-model="search_query"
+              required
+            />
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="submit">
+                <span class="fa fa-search" aria-hidden="true"></span> search!
+              </button>
+            </span>
+          </form>
+        </div>
+      </div>
+      <div class="card shadow-sm">
         <div class="card-body">
           <table class="table table-no-border-top text-gray-900">
             <thead>
@@ -116,7 +136,8 @@ export default {
   data() {
     return {
       data_pengembalian: {},
-      loading: false
+      loading: false,
+      search_query: ""
     };
   },
 
@@ -149,7 +170,9 @@ export default {
       axios
         .get("api/pengembalian", {
           // run something here
-          params: {}
+          params: {
+            search_query: this.search_query
+          }
         })
         .then(response => {
           this.data_pengembalian = response.data.data_pengembalian;

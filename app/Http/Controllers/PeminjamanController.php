@@ -28,7 +28,7 @@ class PeminjamanController extends Controller
                     $query->where('name', 'like', "%{$request->search_query}%"); 
                 })->orWhereHas('buku', function ($query) use ($request) {
                     $query->where('judul_buku', 'like',  "%{$request->search_query}%");
-                })->paginate(10);
+                })->orderBy('tanggal_pinjam', 'desc')->paginate(10);
 
           return response()->json([
               'data_peminjaman' => $peminjaman
