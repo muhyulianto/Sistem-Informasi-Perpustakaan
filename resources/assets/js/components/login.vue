@@ -12,7 +12,8 @@
             data-dismiss="alert"
             aria-label="close"
             @click="errors = false"
-          >&times;</a>
+            >&times;</a
+          >
           <p>{{ errors }}</p>
         </div>
         <form autocomplete="off" @submit.prevent="login" method="post">
@@ -29,7 +30,13 @@
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" class="form-control" v-model="password" required />
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              v-model="password"
+              required
+            />
           </div>
           <button type="submit" class="btn btn-primary">Sign in</button>
         </form>
@@ -63,18 +70,7 @@ export default {
         },
         success: function(resp) {
           app.success = true;
-          console.log(resp);
-          const redirectTo = redirect
-            ? redirect.from.name
-            : this.$auth.user().role === 2
-            ? "dashboard_admin"
-            : "dashboard_user";
-          console.log(redirectTo);
-          this.$router.push({ name: redirectTo });
-        },
-        error: function(err) {
-          app.error = true;
-          app.errors = err.response.data.errors;
+          this.$router.push({ name: "dashboard" });
         },
         rememberMe: true,
         fetchUser: true

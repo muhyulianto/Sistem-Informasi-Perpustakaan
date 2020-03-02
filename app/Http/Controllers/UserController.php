@@ -20,4 +20,5 @@ class UserController extends Controller
         $user = User::Find($id);
         return response()->json($user);
     }
+
 }

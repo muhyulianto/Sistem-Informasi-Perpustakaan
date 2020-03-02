@@ -3,7 +3,7 @@
     <div class="card mt-5 shadow-sm">
       <div class="card-header">
         <div class="card-title">
-          <h3><i class="fa fa-book" aria-hidden="true"></i> Perpustakaan</h3>
+          <h3>Temukan bacaan mu</h3>
         </div>
       </div>
       <div class="card-body">
@@ -48,7 +48,7 @@
             </tr>
           </tbody>
         </table>
-        <dataModal__info
+        <modalInfo
           v-for="(buku, i) in data_buku.data"
           :key="'info' + i"
           :parentData="buku"
@@ -107,13 +107,13 @@
 
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
-import dataModal__info from "./modal-info.vue";
+import modalInfo from "./modal-info.vue";
 
 export default {
   mixins: [searchMixin],
 
   components: {
-    dataModal__info
+    modalInfo
   }
 };
 </script>

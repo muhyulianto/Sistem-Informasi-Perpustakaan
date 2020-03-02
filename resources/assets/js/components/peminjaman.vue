@@ -13,10 +13,32 @@
       </label>
     </div>
     <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm">
+      <div class="card shadow-sm mb-4">
         <div class="card-header">
-          <h5 class="card-title my-2">Data peminjaman</h5>
+          <h5 class="card-title mb-0 py-1">Data peminjaman</h5>
         </div>
+        <div class="card-body">
+          <form
+            v-on:submit.prevent="
+              fetchPeminjaman({ search_query: search_query })
+            "
+            class="input-group"
+          >
+            <input
+              type="search"
+              class="form-control"
+              v-model="search_query"
+              required
+            />
+            <span class="input-group-btn">
+              <button class="btn btn-primary" type="submit">
+                <span class="fa fa-search" aria-hidden="true"></span> search!
+              </button>
+            </span>
+          </form>
+        </div>
+      </div>
+      <div class="card shadow-sm">
         <div class="card-body">
           <table class="table table-no-border-top">
             <thead>
@@ -66,13 +88,13 @@
             </tbody>
           </table>
           <div class="modal-info" v-for="(data, h) in data_peminjaman.data">
-            <dataModal__info
+            <modalInfo
               :key="'info_buku' + h"
               v-bind:isPeminjaman="true"
               :parentData="data.buku"
             />
           </div>
-          <peminjamanModal__user
+          <modalUser
             v-for="(info_user, j) in data_peminjaman.data"
             :key="'info_user' + j"
             :parentData="info_user"
@@ -118,7 +140,7 @@
                 class="page-link"
                 href="#"
                 @click.prevent="
-                  fetchPeminjaman(data_peminjaman.current_page + 1)
+                  fetchPeminjaman(data_peminjaman.current_page)
                 "
               >
                 <span class="fa fa-angle-double-right"></span>
@@ -132,21 +154,21 @@
 </template>
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
-import dataModal__info from "./modal-info.vue";
-import peminjamanModal__user from "./peminjaman__modal--user.vue";
+import modalInfo from "./modal-info.vue";
+import modalUser from "./modal-user.vue";
 
 export default {
   mixins: [searchMixin],
 
   components: {
-    dataModal__info,
-    peminjamanModal__user
+    modalInfo,
+    modalUser
   },
 
   data() {
     return {
       data_peminjaman: {},
-      loading: false
+      search_query: ""
     };
   },
 
@@ -176,7 +198,8 @@ export default {
           // run something here
           params: {
             id: tunggu,
-            page: page
+            page: page,
+            search_query: this.search_query
           }
         })
         .then(response => {
@@ -207,16 +230,6 @@ export default {
             text: "Buku telah dikembalikan"
           });
         });
-    },
-
-    noDuplicateArray(array, item) {
-      const result = array.reduce((unique, o) => {
-        if (!unique.some(obj => obj[item] === o[item])) {
-          unique.push(o);
-        }
-        return unique;
-      }, []);
-      return result;
     }
   }
 };

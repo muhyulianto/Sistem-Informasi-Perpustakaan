@@ -26,7 +26,7 @@
           <h5 class="card-title mb-0 py-1">Data buku di perpustakaan</h5>
         </div>
         <div class="card-body">
-          <form v-on:submit.prevent="search" class="input-group">
+          <form v-on:submit.prevent="search(0, url)" class="input-group">
             <input
               type="search"
               class="form-control"
@@ -149,11 +149,15 @@ import { searchMixin } from "../mixins/searchMixin.js";
 import modalInfo from "./modal-info.vue";
 import buku_ModalAdd from "./modal-add.vue";
 
+import moment from "moment";
+
 export default {
   mixins: [searchMixin],
 
   data() {
-    return {};
+    return {
+      url: "api/data"
+    };
   },
 
   components: {
@@ -227,7 +231,7 @@ export default {
             timer: 3000,
             type: "error",
             title: "Oops!",
-            text: "Anda sudah meminjam buku ini"
+            text: error.response.data.errors
           });
         });
     }

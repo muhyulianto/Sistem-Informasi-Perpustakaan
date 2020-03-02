@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Peminjaman;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -17,29 +18,42 @@ class PeminjamanController extends Controller
     public function index(Request $request)
     {
         if ($request->has('id')){
-            $Peminjaman = Peminjaman::where('id_user', $request->id);
-
+            $peminjaman = Peminjaman::with(['user', 'buku'])->where('id_user', $request->id)->orderBy('tanggal_pinjam', 'desc')->paginate(10);
             return response()->json([
-              'data_peminjaman' => $Peminjaman->with(['user', 'buku'])->paginate(10)
+                'data_peminjaman' => $peminjaman
             ]);
+        } else if ($request->has('search_query')) {
+            $peminjaman = peminjaman::with(['user', 'buku'])
+                ->whereHas('user', function($query) use ($request){
+                    $query->where('name', 'like', "%{$request->search_query}%"); 
+                })->orWhereHas('buku', function ($query) use ($request) {
+                    $query->where('judul_buku', 'like',  "%{$request->search_query}%");
+                })->paginate(10);
+
+          return response()->json([
+              'data_peminjaman' => $peminjaman
+          ]);
         }
 
-        $peminjaman = Peminjaman::with(['user', 'buku'])->paginate(10);
+        $peminjaman = Peminjaman::with(['user', 'buku'])->orderBy('tanggal_pinjam', 'desc')->paginate(10);
 
         return response()->json([
-          'data_peminjaman' => $peminjaman
+            'data_peminjaman' => $peminjaman
         ]);
 
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the data for dashboard menu.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function dashboard()
     {
-        //
+        $peminjamanHarinIni = Peminjaman::where('tanggal_pinjam', carbon::now());
+        return response() -> json([
+            'peminjamanHarinIni' => $peminjamanHarinIni
+        ]);
     }
 
     /**
@@ -50,17 +64,21 @@ class PeminjamanController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            'unique' => 'Anda sudah meminjam buku ini'
-        ];
+      $jumlah = Peminjaman::where('id_user', $request->id_user)
+        ->where('tanggal_pinjam', '>=', Carbon::today())
+        ->count();
 
         $validate = Validator::make($request->all(), [
-            'id_buku' => 'unique:peminjamen,id_buku,NULL,id,id_user,'.$request->id_user
-        ], $messages);
+          'id_buku' => 'unique:peminjamen,id_buku,NULL,id,id_user,'.$request->id_user
+        ]);
 
         if ($validate->fails()) {
             return response()->json([
-                'errors'=> $validate->messages(),
+              'errors'=> 'Buku sudah anda pinjam',
+            ], 422);
+        } else if ( $jumlah > 2) {
+            return response()->json([
+                'errors'=> 'Anda hanya dapat meminjam 3 buku per hari',
             ], 422);
         }
 

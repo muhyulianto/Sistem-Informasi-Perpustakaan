@@ -16,8 +16,8 @@ export const searchMixin = {
       axios
         .get("api/data", {
           params: {
-            search_query: this.search_query,
-            page: page
+            page: page,
+            search_query: this.search_query
           }
         })
         .then(response => {

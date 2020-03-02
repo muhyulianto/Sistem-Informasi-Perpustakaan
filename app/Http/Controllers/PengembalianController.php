@@ -43,9 +43,11 @@ class PengembalianController extends Controller
     {
       // Mencari data berdasarkan id
       $data_peminjaman = Peminjaman::where('id', $request->id)->first();
-      $date = strtotime($data_peminjaman->tanggal_pinjam);
+      $date = strtotime($data_peminjaman->tanggal_kembali);
       if(Carbon::now() > $data_peminjaman->tanggal_kembali){
         $telat = round(abs(strtotime(Carbon::now()) - $date) / 86400);
+      } else {
+        $telat = 0;
       }
       // Menyimpan data ke dalam variable
       $id_user = $data_peminjaman->id_user;

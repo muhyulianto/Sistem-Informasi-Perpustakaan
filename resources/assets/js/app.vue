@@ -41,7 +41,7 @@
       <div v-if="!$auth.check()" class="authCheck">
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
           <div class="container">
-            <span class="navbar-brand">Perpustakaan</span>
+            <span class="fa fa-2x fa-book mr-2"></span>
             <button
               class="navbar-toggler"
               type="button"
@@ -86,15 +86,3 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  created() {
-    document.addEventListener("beforeunload", this.handler);
-  },
-  methods: {
-    handler: function handler(event) {
-      alert("tutup");
-    }
-  }
-};
-</script>

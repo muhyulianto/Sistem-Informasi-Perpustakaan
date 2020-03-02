@@ -27,7 +27,7 @@
                 <th v-if="$auth.user().role == 2">Nama user</th>
                 <th>judul buku</th>
                 <th>Tanggal pinjam</th>
-                <th>Tanggal kembali</th>
+                <th>Dikembalikan</th>
                 <th>Denda</th>
               </tr>
             </thead>
@@ -64,12 +64,12 @@
                       Keterangan
                     "
                     :data-content="
-                    'Dikembalikan: ' + moment(kembali.dikembalikan_tanggal).format('DD MMMM YYYY')
+                    'Tanggal kembali: ' + moment(kembali.tanggal_kembali).format('DD MMMM YYYY')
                     + '<br/>' + 
                     'Terlambat: ' + kembali.telat + ' Hari'
                     "
                   >
-                    {{ kembali.tanggal_kembali | moment("DD MMMM YYYY") }}
+                    {{ kembali.dikembalikan_tanggal | moment("DD MMMM YYYY") }}
                   </a>
                 </td>
                 <td>Rp.{{ kembali.denda }},-</td>
@@ -100,7 +100,7 @@
 </template>
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
-import modalUser from "./peminjaman__modal--user.vue";
+import modalUser from "./modal-user.vue";
 import modalInfo from "./modal-info.vue";
 import modalTanggal from "./modal-tanggal.vue";
 
