@@ -12,7 +12,7 @@
     "fideloper/proxy": "~3.3",
     "laravel/framework": "5.5.*",
     "laravel/tinker": "~1.0",
-    "maatwebsite/excel": "~2.1.0",
+    "maatwebsite/excel": "^3.1",
     "nesbot/carbon": "^1.24.1",
     "tymon/jwt-auth": "dev-develop"
   },

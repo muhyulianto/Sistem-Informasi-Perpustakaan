@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Peminjaman;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
+use DB;
 
 class PeminjamanController extends Controller
 {
@@ -50,9 +50,31 @@ class PeminjamanController extends Controller
      */
     public function dashboard()
     {
-        $peminjamanHarinIni = Peminjaman::where('tanggal_pinjam', carbon::now());
+        $userMeminjamBukuHariIni = Peminjaman::whereDate('tanggal_pinjam', Carbon::today())->distinct("id_user")->count("id_user");
+
+        $bukuDiPinjamHariIni = Peminjaman::whereDate('tanggal_pinjam', Carbon::today())->count();
+
+        $bukuPalingBanyakPinjam = Peminjaman::select('id_buku')
+            ->with('buku')
+            ->selectRaw('count(id_buku) as jumlah')
+            ->groupBy('id_buku')
+            ->orderBy('jumlah', 'DESC')
+            ->limit(1)
+            ->get();
+
+        $userPalingBanyakMeminjam = Peminjaman::select('id_user')
+            ->with('user')
+            ->selectRaw('count(id_user) as jumlah')
+            ->groupBy('id_user')
+            ->orderBy('jumlah', 'DESC')
+            ->limit(1)
+            ->get();
+
         return response() -> json([
-            'peminjamanHarinIni' => $peminjamanHarinIni
+            'userMeminjamBukuHariIni' => $userMeminjamBukuHariIni,
+            'bukuDiPinjamHariIni' => $bukuDiPinjamHariIni,
+            'userPalingBanyakMeminjam' => $userPalingBanyakMeminjam,
+            'bukuPalingBanyakPinjam' => $bukuPalingBanyakPinjam
         ]);
     }
 
@@ -74,7 +96,7 @@ class PeminjamanController extends Controller
 
         if ($validate->fails()) {
             return response()->json([
-              'errors'=> 'Buku sudah anda pinjam',
+                'errors'=> 'Buku sudah anda pinjam',
             ], 422);
         } else if ( $jumlah > 2) {
             return response()->json([
@@ -86,14 +108,23 @@ class PeminjamanController extends Controller
     }
 
     /**
-     * display the specified resource.
+     * Get data for chart js.
      *
      * @param  \App\Peminjaman  $peminjaman
      * @return \Illuminate\Http\Response
      */
-    public function show(Peminjaman $peminjaman)
+    public function chartData()
     {
-        //
+        $chartdata = Peminjaman::select(DB::raw('DATE(tanggal_pinjam) as date'))
+            ->selectRaw('count(tanggal_pinjam) as jumlah')
+            ->where('tanggal_pinjam', '>=',carbon::now()->subDays('7'))
+            ->orderBy('tanggal_pinjam')
+            ->groupBy('date')
+            ->get();
+        
+        return response()->json([
+            'chartdata' => $chartdata
+        ]);
     }
 
     /**

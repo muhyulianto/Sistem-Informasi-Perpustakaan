@@ -19,13 +19,6 @@
 Route::view('/', 'layouts.app')->name('layout');
 
 Route::get('/denda', 'PeminjamanController@index');
-// Route::post('/import_excel', 'ExcelController@import_excel');
-// Route::post('/export_excel', 'ExcelController@export_excel')->name('export_excel');
-// Route::post('/template', 'ExcelController@template')->name('template');
-// Route::get('/export', 'ExcelController@export')->name('export');
-
-// Route::resource('user', 'UserController');
-// Route::post('/user/{id}/update_password', 'UserController@update_password')->name('update_password');
 
 Route::get('/{vue_capture?}', function () {
     return view('layouts.app');

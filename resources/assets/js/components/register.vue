@@ -10,7 +10,9 @@
         </div>
         <div class="alert alert-success" v-if="success">
           <p>
-            Registration completed. You can now
+            Registration completed.
+            <br />
+            You now can
             <router-link :to="{ name: 'login' }">sign in.</router-link>
           </p>
         </div>

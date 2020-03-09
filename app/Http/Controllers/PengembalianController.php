@@ -29,9 +29,9 @@ class PengembalianController extends Controller
                     $query->where('judul_buku', 'like',  "%{$request->search_query}%");
                 })->orderBy('tanggal_pinjam', 'desc')->paginate(10);
 
-          return response()->json([
-              'data_pengembalian' => $pengembalian
-          ]);
+            return response()->json([
+                'data_pengembalian' => $pengembalian
+            ]);
         }
 
         $pengembalian = pengembalian::with(['user', 'buku'])->orderBy('tanggal_pinjam', 'desc')->paginate(10);
@@ -64,9 +64,9 @@ class PengembalianController extends Controller
       $data_peminjaman = Peminjaman::where('id', $request->id)->first();
       $date = strtotime($data_peminjaman->tanggal_kembali);
       if(Carbon::now() > $data_peminjaman->tanggal_kembali){
-        $telat = round(abs(strtotime(Carbon::now()) - $date) / 86400);
+          $telat = round(abs(strtotime(Carbon::now()) - $date) / 86400);
       } else {
-        $telat = 0;
+          $telat = 0;
       }
       // Menyimpan data ke dalam variable
       $id_user = $data_peminjaman->id_user;
