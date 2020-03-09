@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Peminjaman;
 use App\Pengembalian;
 use Carbon\Carbon;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Illuminate\Http\Request;
 
 class PengembalianController extends Controller
@@ -96,9 +99,9 @@ class PengembalianController extends Controller
      * @param  \App\pengembalian  $pengembalian
      * @return \Illuminate\Http\Response
      */
-    public function show(pengembalian $pengembalian)
+    public function download()
     {
-        //
+       return Excel::download(new UsersExport, 'users.xlsx'); 
     }
 
     /**

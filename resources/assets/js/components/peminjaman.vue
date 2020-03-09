@@ -13,7 +13,7 @@
       </label>
     </div>
     <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm mb-4">
+      <div class="card shadow-sm mb-2">
         <div class="card-header">
           <h5 class="card-title mb-0 py-1">Data peminjaman</h5>
         </div>
@@ -139,9 +139,7 @@
               <a
                 class="page-link"
                 href="#"
-                @click.prevent="
-                  fetchPeminjaman(data_peminjaman.current_page)
-                "
+                @click.prevent="fetchPeminjaman(data_peminjaman.current_page)"
               >
                 <span class="fa fa-angle-double-right"></span>
               </a>

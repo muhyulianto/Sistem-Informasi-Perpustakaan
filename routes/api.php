@@ -43,3 +43,4 @@ Route::post('/dashboard/chartData', 'PeminjamanController@chartData');
 Route::resource('pengembalian', 'PengembalianController')->only([
   'store', 'index'
 ]);
+Route::get('/pengembalian/download', 'PengembalianController@download');

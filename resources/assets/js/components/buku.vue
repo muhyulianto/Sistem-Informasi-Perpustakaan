@@ -13,7 +13,7 @@
       </label>
     </div>
     <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm mb-4">
+      <div class="card shadow-sm mb-2">
         <div class="card-header">
           <button
             class="btn btn-primary btn-sm pull-right"

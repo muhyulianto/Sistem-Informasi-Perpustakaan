@@ -13,17 +13,13 @@
       </label>
     </div>
     <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm mb-4">
-        <div class="card-header">
-          <h5 class="card-title mb-0 py-1">Data peminjaman</h5>
+      <div class="card shadow-sm mb-2">
+        <div class="card-header d-flex justify-content-between">
+          <h5 class="card-title mb-0 py-1">Data pengembalian</h5>
+          <a href="api/pengembalian/download">Download data pengembalian</a>
         </div>
         <div class="card-body">
-          <form
-            v-on:submit.prevent="
-              fetchPengembalian({ search_query: search_query })
-            "
-            class="input-group"
-          >
+          <form v-on:submit.prevent="fetchPengembalian()" class="input-group">
             <input
               type="search"
               class="form-control"
@@ -178,6 +174,9 @@ export default {
           this.data_pengembalian = response.data.data_pengembalian;
           this.loading = false;
         });
+    },
+    downloadPengembalian() {
+      axios.get("api/pengembalian/download", {});
     }
   }
 };
