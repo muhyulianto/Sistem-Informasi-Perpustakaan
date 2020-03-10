@@ -1,6 +1,9 @@
 <template>
-  <div class="col-md-8 offset-md-2">
-    <div class="card mt-5 shadow-sm">
+  <div
+    class="d-flex flex-column justify-content-center align-items-center"
+    style="min-height: 50vh"
+  >
+    <div class="card mt-5 w-75 shadow-sm">
       <div class="card-header">
         <div class="card-title">
           <h3>Perpustakaan</h3>
@@ -22,7 +25,7 @@
         </form>
       </div>
     </div>
-    <div class="card my-5 shadow-sm" v-if="has_data_buku == true">
+    <div class="card mt-2 mb-5 w-75 shadow-sm" v-if="has_data_buku == true">
       <div class="card-body">
         <table class="table table-no-border-top">
           <thead>
