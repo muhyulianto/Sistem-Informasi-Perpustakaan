@@ -76,13 +76,13 @@
           </div>
         </nav>
       </template>
-      <template :class="$auth.check() ? 'main' : ''">
+      <div :class="$auth.check() ? 'main' : ''">
         <div class="container">
           <transition name="fade">
             <router-view></router-view>
           </transition>
         </div>
-      </template>
+      </div>
     </template>
   </div>
 </template>
