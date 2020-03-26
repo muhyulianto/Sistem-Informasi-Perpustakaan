@@ -1,7 +1,7 @@
 <template>
   <div class="templateRoot min-vh-100">
-    <div v-if="$auth.ready()" class="authReady">
-      <div v-if="$auth.check()" class="authCheck">
+    <template v-if="$auth.ready()" class="authReady">
+      <template v-if="$auth.check()" class="authCheck">
         <div class="sidenav shadow-sm">
           <div class="sidenav__img">
             <img
@@ -36,9 +36,9 @@
             >
           </div>
         </div>
-      </div>
+      </template>
       <!-- Unauthorized -->
-      <div v-if="!$auth.check()" class="authCheck">
+      <template v-if="!$auth.check()" class="authCheck">
         <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
           <div class="container">
             <span class="fa fa-2x fa-book mr-2"></span>
@@ -75,7 +75,7 @@
             </div>
           </div>
         </nav>
-      </div>
+      </template>
       <div :class="$auth.check() ? 'main' : ''">
         <div class="container">
           <transition name="fade">
@@ -83,6 +83,6 @@
           </transition>
         </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>

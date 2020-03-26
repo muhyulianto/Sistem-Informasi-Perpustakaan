@@ -31,7 +31,7 @@ Vue.use(VueAxios, axios);
 Vue.use(VueAuth, auth);
 
 axios.defaults.baseURL =
-  "http://localhost/Sistem-Informasi-Perpustakaan/public";
+  "http://localhost:3000/Sistem-Informasi-Perpustakaan/public";
 // import css
 import "sweetalert2/dist/sweetalert2.min.css";
 

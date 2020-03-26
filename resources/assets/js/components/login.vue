@@ -23,7 +23,6 @@
               type="email"
               id="email"
               class="form-control"
-              placeholder="user@example.com"
               v-model="email"
               required
             />
