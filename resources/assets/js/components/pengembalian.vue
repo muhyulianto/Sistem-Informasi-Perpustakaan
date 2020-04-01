@@ -1,19 +1,7 @@
 <template>
   <div class="row">
-    <div v-if="loading" class="loading">
-      <label class="align-self-center">
-        <div class="sk-chase">
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-        </div>
-      </label>
-    </div>
-    <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm mb-2">
+    <div class="col">
+      <div class="card">
         <div class="card-header d-flex justify-content-between">
           <h5 class="card-title mb-0 py-1">Data pengembalian</h5>
           <a href="api/pengembalian/download">Download data pengembalian</a>
@@ -34,7 +22,7 @@
           </form>
         </div>
       </div>
-      <div class="card shadow-sm">
+      <div class="card">
         <div class="card-body">
           <table class="table table-no-border-top text-gray-900">
             <thead>
@@ -162,7 +150,7 @@ export default {
 
   methods: {
     fetchPengembalian() {
-      this.loading = true;
+      this.$store.commit("TOGGLE_LOADING", true);
       axios
         .get("api/pengembalian", {
           // run something here
@@ -172,7 +160,7 @@ export default {
         })
         .then(response => {
           this.data_pengembalian = response.data.data_pengembalian;
-          this.loading = false;
+          this.$store.commit("TOGGLE_LOADING", false);
         });
     },
     downloadPengembalian() {

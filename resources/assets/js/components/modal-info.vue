@@ -21,13 +21,13 @@
           </div>
           <div class="modal-body">
             <div class="d-flex">
-              <div class="d-flex flex-column w-35 mr-5">
+              <div class="d-flex flex-column w-35">
                 <img
-                  class="w-100 h-100 object-cover"
-                  :src="'./uploads/' + parentData.namaGambar"
+                  class="w-100 h-276 object-cover"
+                  :src="'./../uploads/' + parentData.namaGambar"
                   alt=""
                 />
-                <div :class="isEditing ? 'input-group mt-3' : 'd-none'">
+                <div :class="isEditing ? 'input-group mt-n5 p-1' : 'd-none'">
                   <div class="custom-file">
                     <input
                       type="file"
