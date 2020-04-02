@@ -23,5 +23,4 @@ Homestead.json
 .phpunit.result.cache
 
 *.swp
-
 public/uploads/*

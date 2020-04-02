@@ -1,19 +1,7 @@
 <template>
   <div class="row">
-    <div v-if="loading" class="loading">
-      <label class="align-self-center">
-        <div class="sk-chase">
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-        </div>
-      </label>
-    </div>
-    <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm mb-2">
+    <div class="col">
+      <div class="card">
         <div class="card-header">
           <button
             class="btn btn-primary btn-sm pull-right"
@@ -41,7 +29,7 @@
           </form>
         </div>
       </div>
-      <div class="card shadow-sm">
+      <div class="card">
         <div class="card-body">
           <table class="table table-no-border-top">
             <thead>
@@ -237,4 +225,5 @@ export default {
     }
   }
 };
+</script>
 </script>

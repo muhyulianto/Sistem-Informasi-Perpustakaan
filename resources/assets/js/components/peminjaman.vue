@@ -1,19 +1,7 @@
 <template>
   <div class="row">
-    <div v-if="loading" class="loading">
-      <label class="align-self-center">
-        <div class="sk-chase">
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-        </div>
-      </label>
-    </div>
-    <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm mb-2">
+    <div class="col">
+      <div class="card">
         <div class="card-header">
           <h5 class="card-title mb-0 py-1">Data peminjaman</h5>
         </div>
@@ -38,7 +26,7 @@
           </form>
         </div>
       </div>
-      <div class="card shadow-sm">
+      <div class="card">
         <div class="card-body">
           <table class="table table-no-border-top">
             <thead>
@@ -189,7 +177,7 @@ export default {
     },
 
     async fetchPeminjaman(page) {
-      this.loading = true;
+      this.$store.commit("TOGGLE_LOADING", true);
       let tunggu = await this.fethUser();
       axios
         .get("api/peminjaman", {
@@ -207,7 +195,7 @@ export default {
             this.data_peminjaman.current_page,
             this.data_peminjaman.per_page
           );
-          this.loading = false;
+          this.$store.commit("TOGGLE_LOADING", false);
         });
     },
 
