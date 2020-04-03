@@ -2,17 +2,16 @@ export const searchMixin = {
   data() {
     return {
       search_query: "",
-      loading: false,
       has_notFound: "",
       data_buku: {},
       data_pagination: [],
-      hasil_percobaan: false,
       has_data_buku: false
     };
   },
+
   methods: {
     search(page) {
-      this.loading = true;
+      this.$store.commit("TOGGLE_LOADING", true);
       axios
         .get("api/data", {
           params: {
@@ -28,8 +27,8 @@ export const searchMixin = {
             this.data_buku.current_page,
             this.data_buku.per_page
           );
-          this.loading = false;
-        });
+          this.$store.commit("TOGGLE_LOADING", false);
+        })
     },
 
     getPagesArray(numberOfItems, currentPage, itemsPerPage) {

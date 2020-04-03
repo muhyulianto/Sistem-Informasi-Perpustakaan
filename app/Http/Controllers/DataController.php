@@ -20,13 +20,15 @@ class DataController extends Controller
     public function index(Request $request)
     {
         if($request->search_query != ''){
+
             $Bukus = Buku::where('judul_buku','like','%'.$request->search_query.'%')
-            ->orWhere('pengarang', 'like', '%'.$request->search_query.'%')
-            ->orWhere('tahun_terbit', 'like', '%'.$request->search_query.'%')
-            ->orWhere('penerbit', 'like', '%'.$request->search_query.'%')
-            ->orWhere('lokasi_rak', 'like', '%'.$request->search_query.'%')
-            ->orWhere('jenis_buku', 'like', '%'.$request->search_query.'%')
-            ->paginate(10);
+                ->orWhere('pengarang', 'like', '%'.$request->search_query.'%')
+                ->orWhere('tahun_terbit', 'like', '%'.$request->search_query.'%')
+                ->orWhere('penerbit', 'like', '%'.$request->search_query.'%')
+                ->orWhere('lokasi_rak', 'like', '%'.$request->search_query.'%')
+                ->orWhere('jenis_buku', 'like', '%'.$request->search_query.'%')
+                ->orderBy('judul_buku')
+                ->paginate(10);
 
             return response()->json([
                 'data_buku' => $Bukus->appends($request->only('search_query'))
@@ -121,7 +123,7 @@ class DataController extends Controller
     public function update(Request $request, $id)
     {
         $fileImage = $request->file('image');
-        //$fileImage->move(base_path('/public/uploads'), $fileImage->getClientOriginalName());
+        $fileImage->move(base_path('/public/uploads'), $fileImage->getClientOriginalName());
 
         $Bukus = Buku::findOrFail($id);
         $Bukus->judul_buku = $request->judul_buku;
@@ -130,7 +132,7 @@ class DataController extends Controller
         $Bukus->penerbit = $request->penerbit;
         $Bukus->jenis_buku = $request->jenis_buku;
         $Bukus->lokasi_rak = $request->lokasi_rak;
-        //$Bukus->namaGambar = $request->fileImage->getClientOriginalName();
+        $Bukus->namaGambar = $fileImage->getclientoriginalname();
         $Bukus->save();
         return response()->json($Bukus);
     }

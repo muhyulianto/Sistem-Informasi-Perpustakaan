@@ -19,6 +19,9 @@ class CreatePeminjamenTable extends Migration
             $table->integer('id_buku')->nullable();
             $table->dateTime('tanggal_pinjam')->nullable();
             $table->dateTime('tanggal_kembali')->nullable();
+            $table->dateTime('dikembalikan_tanggal')->nullable();
+            $table->integer('telat')->nullable();
+            $table->integer('denda')->nullable();
         });
     }
 

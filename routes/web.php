@@ -12,14 +12,6 @@
 */
 
 // Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
-
-// Route::resource('data', 'DataController');
-Route::view('/', 'layouts.app')->name('layout');
-
-Route::get('/denda', 'PeminjamanController@index');
-
 Route::get('/{vue_capture?}', function () {
     return view('layouts.app');
 })->where('vue_capture', '[\/\w\.-]*');

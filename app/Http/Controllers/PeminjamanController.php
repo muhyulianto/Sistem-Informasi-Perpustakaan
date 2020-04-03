@@ -11,46 +11,76 @@ use DB;
 class PeminjamanController extends Controller
 {
     /**
+     *
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
+        // jika bukan admin
         if ($request->has('id')){
-            $peminjaman = Peminjaman::with(['user', 'buku'])->where('id_user', $request->id)->orderBy('tanggal_pinjam', 'desc')->paginate(10);
+
+            $peminjaman = Peminjaman::with(['user', 'buku'])
+                ->where('id_user', $request->id)
+                ->whereNull('dikembalikan_tanggal')
+                ->orderBy('tanggal_pinjam', 'desc')
+                ->paginate(10);
+
             return response()->json([
                 'data_peminjaman' => $peminjaman
             ]);
-        } else if ($request->has('search_query')) {
-            $peminjaman = peminjaman::with(['user', 'buku'])
-                ->whereHas('user', function($query) use ($request){
-                    $query->where('name', 'like', "%{$request->search_query}%"); 
-                })->orWhereHas('buku', function ($query) use ($request) {
-                    $query->where('judul_buku', 'like',  "%{$request->search_query}%");
-                })->orderBy('tanggal_pinjam', 'desc')->paginate(10);
 
-          return response()->json([
-              'data_peminjaman' => $peminjaman
-          ]);
         }
 
-        $peminjaman = Peminjaman::with(['user', 'buku'])->orderBy('tanggal_pinjam', 'desc')->paginate(10);
+        // Jika admin
+        else {
 
-        return response()->json([
-            'data_peminjaman' => $peminjaman
-        ]);
+            // mengambil buku yang sudah dikembalikan
+            if ($request->has('pengembalian')) {
+                $peminjaman = peminjaman::with(['user', 'buku'])
+                    ->whereHas('user', function($query) use ($request){
+                        $query->where('name', 'like', "%{$request->search_query}%")
+                        ->whereNotNull('dikembalikan_tanggal');
+                    })->orWhereHas('buku', function ($query) use ($request) {
+                        $query->where('judul_buku', 'like',  "%{$request->search_query}%")
+                        ->whereNotNull('dikembalikan_tanggal');
+                    })
+                    ->orderBy('dikembalikan_tanggal', 'desc')->paginate(10);
+
+                return response()->json([
+                  'data_peminjaman' => $peminjaman
+                ]);
+            }
+            
+            // mengambil buku belum dikembalikan
+            $peminjaman = peminjaman::with(['user', 'buku'])
+                ->whereHas('user', function($query) use ($request){
+                    $query->where('name', 'like', "%{$request->search_query}%")
+                    ->whereNull('dikembalikan_tanggal');
+                })->orWhereHas('buku', function ($query) use ($request) {
+                    $query->where('judul_buku', 'like',  "%{$request->search_query}%")
+                    ->whereNull('dikembalikan_tanggal');
+                })
+                ->orderBy('tanggal_pinjam', 'desc')->paginate(10);
+
+            return response()->json([
+              'data_peminjaman' => $peminjaman
+            ]);
+
+        }
 
     }
 
     /**
+     *
      * Show the data for dashboard menu.
      *
-     * @return \Illuminate\Http\Response
      */
     public function dashboard()
     {
-        $userMeminjamBukuHariIni = Peminjaman::whereDate('tanggal_pinjam', Carbon::today())->distinct("id_user")->count("id_user");
+        $userMeminjamBukuHariIni = Peminjaman::whereDate('tanggal_pinjam', Carbon::today())
+            ->distinct("id_user")
+            ->count("id_user");
 
         $bukuDiPinjamHariIni = Peminjaman::whereDate('tanggal_pinjam', Carbon::today())->count();
 
@@ -78,11 +108,10 @@ class PeminjamanController extends Controller
         ]);
     }
 
-    /**
+    /*
+     *
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -108,10 +137,9 @@ class PeminjamanController extends Controller
     }
 
     /**
+     *
      * Get data for chart js.
      *
-     * @param  \App\Peminjaman  $peminjaman
-     * @return \Illuminate\Http\Response
      */
     public function chartData()
     {
@@ -128,36 +156,40 @@ class PeminjamanController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 
+     * Fungsi untuk mengembalikan buku
      *
-     * @param  \App\Peminjaman  $peminjaman
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Peminjaman $peminjaman)
+     **/
+    public function kembalikanBuku(Request $request)
     {
-        //
+        // Mencari data berdasarkan id
+        $data_peminjaman = Peminjaman::find($request->id);
+        $date = strtotime($data_peminjaman->tanggal_kembali);
+        if(carbon::now() > $data_peminjaman->tanggal_kembali){
+          $telat = round(abs(strtotime(carbon::now()) - $date) / 86400);
+        } else {
+          $telat = 0;
+        }
+
+        $dikembalikan_tanggal = carbon::now();
+        $denda = $telat * 500;
+
+        $data_peminjaman->dikembalikan_tanggal = $dikembalikan_tanggal;
+        $data_peminjaman->telat = $telat;
+        $data_peminjaman->denda = $denda;
+        $data_peminjaman->save();
+
     }
 
     /**
-     * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Peminjaman  $peminjaman
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Peminjaman $peminjaman)
+     * Donwload data as excel
+     *
+     **/
+    public function download()
     {
-        //
+       return Excel::download(new UsersExport, 'users.xlsx'); 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Peminjaman  $peminjaman
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Peminjaman $peminjaman)
-    {
-        //
-    }
+
 }

@@ -1,25 +1,21 @@
 <template>
   <div class="row">
-    <div v-if="loading" class="loading">
-      <label class="align-self-center">
-        <div class="sk-chase">
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-          <div class="sk-chase-dot"></div>
-        </div>
-      </label>
-    </div>
-    <div v-if="!loading" class="col fadeMe">
-      <div class="card shadow-sm mb-2">
+    <div class="col">
+      <div class="card">
         <div class="card-header d-flex justify-content-between">
           <h5 class="card-title mb-0 py-1">Data pengembalian</h5>
           <a href="api/pengembalian/download">Download data pengembalian</a>
         </div>
         <div class="card-body">
-          <form v-on:submit.prevent="fetchPengembalian()" class="input-group">
+          <form
+            v-on:submit.prevent="
+              fetchPeminjaman({
+                search_query: search_query,
+                pengembalian: true
+              })
+            "
+            class="input-group"
+          >
             <input
               type="search"
               class="form-control"
@@ -34,7 +30,7 @@
           </form>
         </div>
       </div>
-      <div class="card shadow-sm">
+      <div class="card">
         <div class="card-body">
           <table class="table table-no-border-top text-gray-900">
             <thead>
@@ -48,8 +44,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(kembali, i) in data_pengembalian.data" v-bind:key="i">
-                <td>{{ data_pengembalian.from + i }}</td>
+              <tr v-for="(kembali, i) in data_peminjaman.data" v-bind:key="i">
+                <td>{{ data_peminjaman.from + i }}</td>
                 <td v-if="$auth.user().role == 2">
                   <a
                     href
@@ -93,11 +89,11 @@
             </tbody>
           </table>
           <modalUser
-            v-for="(info_user, j) in data_pengembalian.data"
+            v-for="(info_user, j) in data_peminjaman.data"
             :key="'info_user' + j"
             :parentData="info_user"
           />
-          <div class="modal-info" v-for="(data, h) in data_pengembalian.data">
+          <div class="modal-info" v-for="(data, h) in data_peminjaman.data">
             <modalInfo
               :key="'info_buku' + h"
               v-bind:isPeminjaman="true"
@@ -105,7 +101,7 @@
             />
           </div>
           <modalTanggal
-            v-for="(info_tanggal, k) in data_pengembalian.data"
+            v-for="(info_tanggal, k) in data_peminjaman.data"
             :key="'info_tanggal' + k"
             :parentData="info_tanggal"
           ></modalTanggal>
@@ -116,12 +112,13 @@
 </template>
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
+import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
 import modalUser from "./modal-user.vue";
 import modalInfo from "./modal-info.vue";
 import modalTanggal from "./modal-tanggal.vue";
 
 export default {
-  mixins: [searchMixin],
+  mixins: [searchMixin, peminjamanMixin],
 
   components: {
     modalUser,
@@ -131,14 +128,13 @@ export default {
 
   data() {
     return {
-      data_pengembalian: {},
-      loading: false,
+      data_peminjaman: {},
       search_query: ""
     };
   },
 
   mounted() {
-    this.fetchPengembalian();
+    this.fetchPeminjaman({ search_query: "", pengembalian: true });
   },
 
   updated: function() {
@@ -161,20 +157,6 @@ export default {
   },
 
   methods: {
-    fetchPengembalian() {
-      this.loading = true;
-      axios
-        .get("api/pengembalian", {
-          // run something here
-          params: {
-            search_query: this.search_query
-          }
-        })
-        .then(response => {
-          this.data_pengembalian = response.data.data_pengembalian;
-          this.loading = false;
-        });
-    },
     downloadPengembalian() {
       axios.get("api/pengembalian/download", {});
     }

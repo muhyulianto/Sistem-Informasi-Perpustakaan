@@ -41,6 +41,7 @@ Route::resource('peminjaman', 'PeminjamanController');
 Route::post('/dashboard/pinjam', 'PeminjamanController@dashboard');
 Route::post('/dashboard/chartData', 'PeminjamanController@chartData');
 Route::resource('pengembalian', 'PengembalianController')->only([
-  'store', 'index'
+  'index'
 ]);
-Route::get('/pengembalian/download', 'PengembalianController@download');
+Route::post('/kembalikanBuku', 'PeminjamanController@kembalikanBuku');
+Route::get('/pengembalian/download', 'PeminjamanController@download');

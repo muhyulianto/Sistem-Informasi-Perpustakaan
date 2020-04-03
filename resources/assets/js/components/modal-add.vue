@@ -33,7 +33,6 @@
                     type="text"
                     class="form-control"
                     id="judul_buku"
-                    placeholder="Masukan nama buku"
                     v-model="judul_buku"
                   />
                 </div>
@@ -47,7 +46,6 @@
                     type="text"
                     class="form-control"
                     id="pengarang"
-                    placeholder="Masukan nama pengarang"
                     v-model="pengarang"
                   />
                 </div>
@@ -61,7 +59,6 @@
                     type="text"
                     class="form-control"
                     id="tahun_terbit"
-                    placeholder="Masukan tahun terbit buku"
                     v-model="tahun_terbit"
                   />
                 </div>
@@ -75,7 +72,6 @@
                     type="text"
                     class="form-control"
                     id="penerbit"
-                    placeholder="Masukan nama penerbit"
                     v-model="penerbit"
                   />
                 </div>
@@ -89,7 +85,6 @@
                     type="text"
                     class="form-control"
                     id="jenis_buku"
-                    placeholder="Masukan jenis buku"
                     v-model="jenis_buku"
                   />
                 </div>
@@ -103,7 +98,6 @@
                     type="text"
                     class="form-control"
                     id="code_buku"
-                    placeholder="Masukan lokasi rak"
                     v-model="lokasi_rak"
                   />
                 </div>
