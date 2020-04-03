@@ -8,6 +8,7 @@ export const searchMixin = {
       has_data_buku: false
     };
   },
+
   methods: {
     search(page) {
       this.$store.commit("TOGGLE_LOADING", true);

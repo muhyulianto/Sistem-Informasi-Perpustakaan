@@ -99,7 +99,7 @@
                 class="page-link"
                 href="#"
                 @click.prevent="
-                  fetchPeminjaman(data_peminjaman.current_page - 1)
+                  fetchPeminjaman({ page: data_peminjaman.current_page - 1 })
                 "
               >
                 <span class="fa fa-angle-double-left"></span>
@@ -118,7 +118,7 @@
                 class="page-link"
                 href="#"
                 @click.prevent="
-                  halaman == '...' ? '' : fetchPeminjaman(halaman)
+                  halaman == '...' ? '' : fetchPeminjaman({ page: halaman })
                 "
                 >{{ halaman }}</a
               >
@@ -127,7 +127,9 @@
               <a
                 class="page-link"
                 href="#"
-                @click.prevent="fetchPeminjaman(data_peminjaman.current_page)"
+                @click.prevent="
+                  fetchPeminjaman({ page: data_peminjaman.current_page + 1 })
+                "
               >
                 <span class="fa fa-angle-double-right"></span>
               </a>
@@ -140,11 +142,12 @@
 </template>
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
+import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
 import modalInfo from "./modal-info.vue";
 import modalUser from "./modal-user.vue";
 
 export default {
-  mixins: [searchMixin],
+  mixins: [searchMixin, peminjamanMixin],
 
   components: {
     modalInfo,
@@ -159,64 +162,9 @@ export default {
   },
 
   mounted() {
-    this.fetchPeminjaman();
+    this.fetchPeminjaman({});
   },
 
-  methods: {
-    fethUser() {
-      return axios
-        .get("api/auth/user", {
-          params: {}
-        })
-        .then(response => {
-          if (response.data.data.role == 2) {
-            return null;
-          }
-          return response.data.data.id;
-        });
-    },
-
-    async fetchPeminjaman(page) {
-      this.$store.commit("TOGGLE_LOADING", true);
-      let tunggu = await this.fethUser();
-      axios
-        .get("api/peminjaman", {
-          // run something here
-          params: {
-            id: tunggu,
-            page: page,
-            search_query: this.search_query
-          }
-        })
-        .then(response => {
-          this.data_peminjaman = response.data.data_peminjaman;
-          this.data_pagination = this.getPagesArray(
-            this.data_peminjaman.total,
-            this.data_peminjaman.current_page,
-            this.data_peminjaman.per_page
-          );
-          this.$store.commit("TOGGLE_LOADING", false);
-        });
-    },
-
-    returnBuku(id) {
-      axios
-        .post("api/pengembalian", {
-          id: id
-        })
-        .then(response => {
-          this.fetchPeminjaman();
-          this.$swal({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            type: "success",
-            title: "Berhasil!",
-            text: "Buku telah dikembalikan"
-          });
-        });
-    }
-  }
+  methods: {}
 };
 </script>
