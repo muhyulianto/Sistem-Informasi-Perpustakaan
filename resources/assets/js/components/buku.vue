@@ -3,34 +3,50 @@
     <div class="col">
       <div class="card">
         <div class="card-header">
-          <button
-            class="btn btn-primary btn-sm pull-right"
-            data-toggle="modal"
-            data-target="#tambah_data"
-            v-if="$auth.user().role == 2"
-          >
-            Tambah data
-          </button>
           <h5 class="card-title mb-0 py-1">Data buku di perpustakaan</h5>
         </div>
         <div class="card-body">
-          <form v-on:submit.prevent="search(0, url)" class="input-group">
-            <input
-              type="search"
-              class="form-control"
-              v-model="search_query"
-              required
-            />
-            <span class="input-group-btn">
-              <button class="btn btn-primary" type="submit">
-                <span class="fa fa-search" aria-hidden="true"></span> search!
+          <div class="row justify-content-between mb-3">
+            <div class="col-md-4">
+              <button
+                class="btn btn-secondary btn-sm mb-2"
+                data-toggle="modal"
+                data-target="#tambah_data"
+                v-if="$auth.user().role == 2"
+              >
+                Tambah data
               </button>
-            </span>
-          </form>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
+              <form v-on:submit.prevent="search()" class="input-group">
+                <input
+                  type="search"
+                  class="form-control form-control-sm"
+                  v-model="search_query"
+                  required
+                />
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary btn-sm" type="submit">
+                    <span class="fa fa-search" aria-hidden="true"></span> cari
+                  </button>
+                </span>
+              </form>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <div class="d-flex align-items-center">
+                <div>Display</div>
+                <select
+                  v-model="data_entries"
+                  class="form-control form-control-sm mx-2"
+                  id="entry-show"
+                  @change="search(data_buku.current_page)"
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                </select>
+                <div>Entries</div>
+              </div>
+            </div>
+          </div>
           <table class="table table-no-border-top">
             <thead>
               <tr>
@@ -98,7 +114,13 @@
               <a
                 class="page-link"
                 href="#"
-                @click.prevent="halaman == '...' ? '' : search(halaman)"
+                @click.prevent="
+                  data_buku.current_page == halaman
+                    ? ''
+                    : halaman == '...'
+                    ? ''
+                    : search(halaman)
+                "
                 >{{ halaman }}</a
               >
             </li>
@@ -141,12 +163,6 @@ import moment from "moment";
 
 export default {
   mixins: [searchMixin],
-
-  data() {
-    return {
-      url: "api/data"
-    };
-  },
 
   components: {
     modalInfo,
@@ -225,5 +241,4 @@ export default {
     }
   }
 };
-</script>
 </script>

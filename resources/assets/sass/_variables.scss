@@ -171,9 +171,13 @@ $modal-fade-transform: scale(0.9) !default;
 }
 
 // Tables
-
-.table-no-border-top:first-child {
-  th {
-    border-top: none;
+.table-no-border-top {
+  tr:first-child {
+    th {
+      border-top: none;
+    }
   }
 }
+
+// Form
+$input-border-color: $gray-200;
