@@ -21,6 +21,7 @@ Vue.component("app", require("./app.vue"));
 // Set vue router
 Vue.use(VueRouter);
 Vue.use(Vuex);
+
 // Set sweetalert2
 Vue.use(VueSweetalert2);
 

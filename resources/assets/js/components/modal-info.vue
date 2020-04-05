@@ -24,7 +24,7 @@
               <div class="d-flex flex-column w-35">
                 <img
                   class="w-100 h-276 object-cover"
-                  :src="'./../uploads/' + parentData.namaGambar"
+                  :src="'./uploads/' + parentData.namaGambar"
                   alt=""
                 />
                 <div :class="isEditing ? 'input-group mt-n5 p-1' : 'd-none'">

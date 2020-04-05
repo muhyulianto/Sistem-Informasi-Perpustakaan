@@ -23,7 +23,7 @@ export const routes = [
     ]
   },
   {
-    path: "/admin/",
+    path: "/",
     component: Authorized,
     meta: { auth: true },
     children: [

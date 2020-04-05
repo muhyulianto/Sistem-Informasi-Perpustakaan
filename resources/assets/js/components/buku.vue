@@ -77,7 +77,8 @@
                   <button
                     class="btn btn-success btn-sm"
                     v-if="$auth.user().role == 1"
-                    @click="pinjam($auth.user().id, buku.id)"
+                    data-toggle="modal"
+                    :data-target="'#pinjam' + buku.id"
                   >
                     Pinjam
                   </button>
@@ -150,6 +151,12 @@
       :key="'info' + i"
       :parentData="buku"
     />
+    <modalPinjam
+      v-on:reload="search"
+      v-for="(buku, i) in data_buku.data"
+      :key="'pinjam' + i"
+      :parentData="buku"
+    />
     <!-- Modal end -->
   </div>
 </template>
@@ -158,15 +165,15 @@
 import { searchMixin } from "../mixins/searchMixin.js";
 import modalInfo from "./modal-info.vue";
 import buku_ModalAdd from "./modal-add.vue";
-
-import moment from "moment";
+import modalPinjam from "./modal/modal-pinjam.vue";
 
 export default {
   mixins: [searchMixin],
 
   components: {
     modalInfo,
-    buku_ModalAdd
+    buku_ModalAdd,
+    modalPinjam
   },
 
   mounted() {
@@ -204,40 +211,6 @@ export default {
             });
         }
       });
-    },
-
-    pinjam(id_user, id_buku) {
-      axios
-        .post("api/peminjaman", {
-          id_user: id_user,
-          id_buku: id_buku,
-          tanggal_pinjam: moment().format("YYYY-MM-DD hh:mm:ss"),
-          tanggal_kembali: moment()
-            .add(3, "days")
-            .format("YYYY-MM-DD hh:mm:ss")
-        })
-        .then(response => {
-          // run something here
-          this.$swal({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            type: "success",
-            title: "Berhasil!",
-            text: "Data telah ditambahkan"
-          });
-        })
-        .catch(error => {
-          this.$swal({
-            position: "center",
-            showConfirmButton: false,
-            timer: 3000,
-            type: "error",
-            title: "Oops!",
-            text: error.response.data.errors
-          });
-        });
     }
   }
 };

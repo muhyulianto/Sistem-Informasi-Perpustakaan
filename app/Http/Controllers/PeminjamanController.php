@@ -115,9 +115,9 @@ class PeminjamanController extends Controller
      */
     public function store(Request $request)
     {
-      $jumlah = Peminjaman::where('id_user', $request->id_user)
-        ->where('tanggal_pinjam', '>=', Carbon::today())
-        ->count();
+        $jumlah = Peminjaman::where('id_user', $request->id_user)
+            ->where('tanggal_pinjam', '>=', Carbon::today())
+            ->count();
 
         $validate = Validator::make($request->all(), [
           'id_buku' => 'unique:peminjamen,id_buku,NULL,id,id_user,'.$request->id_user
