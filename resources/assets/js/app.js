@@ -25,17 +25,19 @@ Vue.use(Vuex);
 // Set sweetalert2
 Vue.use(VueSweetalert2);
 
+// Vue router
 const router = new VueRouter({
   base: "/Sistem-Informasi-Perpustakaan/public",
   history: true,
   mode: "history",
   routes
 });
-
 Vue.router = router;
 
+// Vuex
 const store = new Vuex.Store(storeData);
 
+// Moment js
 import moment from "moment";
 Vue.prototype.moment = moment;
 
@@ -45,14 +47,11 @@ Vue.use(require("vue-moment"));
 // Require vue-axios
 Vue.use(VueAxios, axios);
 
-// Require vue-auth
-Vue.use(VueAuth, auth);
-
 axios.defaults.baseURL =
   "http://localhost:3000/Sistem-Informasi-Perpustakaan/public";
 
-// import css
-import "sweetalert2/dist/sweetalert2.min.css";
+// Require vue-auth
+Vue.use(VueAuth, auth);
 
 const app = new Vue({
   el: "#app",
