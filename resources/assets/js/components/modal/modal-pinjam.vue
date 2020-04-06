@@ -1,7 +1,7 @@
 <template>
   <div class="modal__data">
     <!-- Modal -->
-    <div :id="'pinjam' + parentData.id" class="modal fade" role="dialog">
+    <div :id="'pinjam' + parentData.id" class="modal" role="dialog">
       <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
