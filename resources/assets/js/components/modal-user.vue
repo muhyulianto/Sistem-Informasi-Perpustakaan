@@ -1,11 +1,7 @@
 <template>
   <div class="modal__data">
     <!-- Modal -->
-    <div
-      :id="'info__user' + parentData.id_user"
-      class="modal fade"
-      role="dialog"
-    >
+    <div :id="'info__user' + parentData.id_user" class="modal" role="dialog">
       <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
