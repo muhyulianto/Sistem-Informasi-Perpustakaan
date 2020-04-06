@@ -6,12 +6,16 @@ import Dashboard from "./components/dashboard";
 import Buku from "./components/buku";
 import Peminjaman from "./components/peminjaman";
 import Pengembalian from "./components/pengembalian";
-import Denda from "./components/denda";
 import unAuthorizedLayout from "./components/layouts/unAuthorized";
 import Authorized from "./components/layouts/Authorized";
+import notFound from "./components/404";
 
 // Routes
 export const routes = [
+  {
+    path: "*/404",
+    component: notFound
+  },
   {
     path: "/",
     component: unAuthorizedLayout,
