@@ -1,7 +1,7 @@
 <template>
   <div class="modal__data">
     <!-- Modal -->
-    <div :id="'info__buku' + parentData.id" class="modal" role="dialog">
+    <div :id="'info__buku' + parentData.id" class="modal fade" role="dialog">
       <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
@@ -20,10 +20,10 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="d-flex flex-wrap justify-content-around">
-              <div class="d-flex flex-column w-250px">
+            <div class="d-flex">
+              <div class="d-flex flex-column w-35">
                 <img
-                  class="w-100 h-100 object-cover"
+                  class="w-100 h-276 object-cover"
                   :src="'./uploads/' + parentData.namaGambar"
                   alt=""
                 />
@@ -44,7 +44,7 @@
                   </div>
                 </div>
               </div>
-              <table class="table-borderless table-sm flex-grow-1">
+              <table class="table table-borderless table-sm w-50 m-0">
                 <tbody>
                   <tr>
                     <th class="align-middle">Judul buku</th>
