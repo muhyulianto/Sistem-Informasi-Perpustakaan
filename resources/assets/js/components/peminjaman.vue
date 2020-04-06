@@ -165,6 +165,25 @@ export default {
     this.fetchPeminjaman({});
   },
 
-  methods: {}
+  methods: {
+    returnBuku(id) {
+      axios
+        .post("api/kembalikanBuku", {
+          id: id
+        })
+        .then(response => {
+          this.fetchPeminjaman({});
+          this.$swal({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            type: "success",
+            title: "Berhasil!",
+            text: "Buku telah dikembalikan"
+          });
+        });
+    }
+  }
 };
 </script>

@@ -38,23 +38,5 @@ export const peminjamanMixin = {
         });
     },
 
-    returnBuku(id) {
-      axios
-        .post("api/kembalikanBuku", {
-          id: id
-        })
-        .then(response => {
-          this.fetchPeminjaman({});
-          this.$swal({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            type: "success",
-            title: "Berhasil!",
-            text: "Buku telah dikembalikan"
-          });
-        });
-    }
   }
 };
