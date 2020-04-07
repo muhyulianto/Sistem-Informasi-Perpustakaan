@@ -24,3 +24,5 @@ Homestead.json
 
 *.swp
 public/uploads/*
+public/js/app.js
+public/css/app.css
