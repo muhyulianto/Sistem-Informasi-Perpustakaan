@@ -16,6 +16,9 @@
               >
                 Tambah data
               </button>
+              <button class="btn btn-secondary btn-sm mb-2" @click="reset()">
+                Reset pencarian
+              </button>
               <form v-on:submit.prevent="search()" class="input-group">
                 <input
                   type="search"
@@ -181,6 +184,11 @@ export default {
   },
 
   methods: {
+    reset() {
+      this.search_query = "";
+      this.search();
+    },
+
     hapus(id) {
       this.$swal({
         title: "Apa anda yakin?",
