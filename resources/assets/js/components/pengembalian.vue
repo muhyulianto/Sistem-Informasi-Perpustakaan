@@ -115,15 +115,13 @@ import { searchMixin } from "../mixins/searchMixin.js";
 import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
 import modalUser from "./modal-user.vue";
 import modalInfo from "./modal-info.vue";
-import modalTanggal from "./modal-tanggal.vue";
 
 export default {
   mixins: [searchMixin, peminjamanMixin],
 
   components: {
     modalUser,
-    modalInfo,
-    modalTanggal
+    modalInfo
   },
 
   data() {
