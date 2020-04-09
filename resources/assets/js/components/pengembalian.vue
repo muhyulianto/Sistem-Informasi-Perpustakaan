@@ -100,11 +100,6 @@
               :parentData="data.buku"
             />
           </div>
-          <modalTanggal
-            v-for="(info_tanggal, k) in data_peminjaman.data"
-            :key="'info_tanggal' + k"
-            :parentData="info_tanggal"
-          ></modalTanggal>
         </div>
       </div>
     </div>
@@ -113,8 +108,8 @@
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
 import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
-import modalUser from "./modal-user.vue";
-import modalInfo from "./modal-info.vue";
+import modalUser from "./modal/modal-user.vue";
+import modalInfo from "./modal/modal-info.vue";
 
 export default {
   mixins: [searchMixin, peminjamanMixin],

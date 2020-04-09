@@ -166,7 +166,7 @@
 
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
-import modalInfo from "./modal-info.vue";
+import modalInfo from "./modal/modal-info.vue";
 import buku_ModalAdd from "./modal/modal-add.vue";
 import modalPinjam from "./modal/modal-pinjam.vue";
 

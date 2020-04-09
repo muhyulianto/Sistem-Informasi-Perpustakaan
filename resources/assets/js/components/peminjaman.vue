@@ -143,8 +143,8 @@
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
 import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
-import modalInfo from "./modal-info.vue";
-import modalUser from "./modal-user.vue";
+import modalInfo from "./modal/modal-info.vue";
+import modalUser from "./modal/modal-user.vue";
 
 export default {
   mixins: [searchMixin, peminjamanMixin],

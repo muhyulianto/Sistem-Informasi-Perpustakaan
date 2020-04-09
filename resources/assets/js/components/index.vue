@@ -115,7 +115,7 @@
 
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
-import modalInfo from "./modal-info.vue";
+import modalInfo from "./modal/modal-info.vue";
 
 export default {
   mixins: [searchMixin],

@@ -2,11 +2,11 @@
   <div class="modal__data">
     <!-- Modal -->
     <div id="tambah_data" class="modal" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <div class="font-weight-bolder">Tambah data buku</div>
+            <div class="modal-title font-weight-bolder">Tambah data buku</div>
             <button
               type="button"
               class="close"
