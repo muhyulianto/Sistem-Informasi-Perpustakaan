@@ -163,7 +163,7 @@
               "
               @click="edit"
             >
-              Edit
+              Ubah
             </button>
             <button
               :class="
@@ -171,15 +171,15 @@
               "
               @click="update(parentData.id)"
             >
-              Save
+              Simpan
             </button>
             <button
               :class="
-                isEditing == false ? 'd-none' : 'btn btn-danger btn-sm px-4 '
+                isEditing == false ? 'd-none' : 'btn btn-secondary btn-sm px-4 '
               "
               @click="isEditing = false"
             >
-              Cancel
+              Batal
             </button>
           </div>
         </div>

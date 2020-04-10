@@ -195,8 +195,6 @@ export default {
         text: "Anda tidak akan dapat mengembalikan file ini",
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         confirmButtonText: "Ya, hapus file ini!",
         cancelButtonText: "Batalkan"
       }).then(result => {

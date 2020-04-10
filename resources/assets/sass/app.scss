@@ -19,8 +19,9 @@ $swal2-toast-border: none;
 // Button
 $swal2-confirm-button-border-radius: 0;
 $swal2-cancel-button-border-radius: 0;
-$swal2-confirm-button-background-color: #008cba !important;
-$swal2-cancel-button-background-color: #f04124 !important;
+$swal2-confirm-button-background-color: $primary !important;
+$swal2-cancel-button-color: $black !important;
+$swal2-cancel-button-background-color: $secondary !important;
 
 // Animation
 $swal2-show-animation: none;
