@@ -13,11 +13,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
-    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet" />
-    <link
-      href="{{ asset('fonts/fontawesome/fontawesome/css/font-awesome.css') }}"
-      rel="stylesheet"
-    />
   </head>
   <body id="particles-js">
     <div id="app">
