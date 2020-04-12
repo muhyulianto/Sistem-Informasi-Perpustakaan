@@ -9,10 +9,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>{{ config('app.name', 'Perpustakaan') }}</title>
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+    <link
+          href="{{ asset('fonts/fontawesome/fontawesome/css/font-awesome.css') }}"
+          rel="stylesheet"
+    />
   </head>
   <body id="particles-js">
     <div id="app">

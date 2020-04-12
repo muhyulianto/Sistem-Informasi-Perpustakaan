@@ -12,8 +12,11 @@ let mix = require("laravel-mix");
  */
 
 mix
-  .js("resources/assets/js/app.js", "public/js").sourceMaps()
-  .sass("resources/assets/sass/app.scss", "public/css");
-
+  .js("resources/assets/js/app.js", "public/js")
+  .sourceMaps()
+  .sass("resources/assets/sass/app.scss", "public/css")
+  .options({
+    processCssUrls: false
+  });
 
 mix.browserSync("http://localhost/Sistem-Informasi-Perpustakaan/public");
