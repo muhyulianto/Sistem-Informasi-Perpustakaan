@@ -24,7 +24,7 @@ class PeminjamanController extends Controller
                 ->where('id_user', $request->id)
                 ->whereNull('dikembalikan_tanggal')
                 ->orderBy('tanggal_pinjam', 'desc')
-                ->paginate(10);
+                ->paginate($request->entries);
 
             return response()->json([
                 'data_peminjaman' => $peminjaman
@@ -61,7 +61,7 @@ class PeminjamanController extends Controller
                     $query->where('judul_buku', 'like',  "%{$request->search_query}%")
                     ->whereNull('dikembalikan_tanggal');
                 })
-                ->orderBy('tanggal_pinjam', 'desc')->paginate(10);
+                ->orderBy('tanggal_pinjam', 'desc')->paginate($request->entries);
 
             return response()->json([
               'data_peminjaman' => $peminjaman

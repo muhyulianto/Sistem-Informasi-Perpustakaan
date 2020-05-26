@@ -1,11 +1,19 @@
 export const peminjamanMixin = {
+  data() {
+    return {
+      data_peminjaman: {},
+      data_entries: 10,
+      search_query: "",
+    };
+  },
+
   methods: {
     fethUser() {
       return axios
         .get("api/auth/user", {
-          params: {}
+          params: {},
         })
-        .then(response => {
+        .then((response) => {
           if (response.data.data.role == 2) {
             return null;
           }
@@ -23,11 +31,12 @@ export const peminjamanMixin = {
           params: {
             id: tunggu,
             page: page,
+            entries: this.data_entries,
             pengembalian: pengembalian,
-            search_query: search_query
-          }
+            search_query: search_query,
+          },
         })
-        .then(response => {
+        .then((response) => {
           this.data_peminjaman = response.data.data_peminjaman;
           this.data_pagination = this.getPagesArray(
             this.data_peminjaman.total,
@@ -38,5 +47,9 @@ export const peminjamanMixin = {
         });
     },
 
-  }
+    reset() {
+      this.search_query = "";
+      this.fetchPeminjaman({});
+    },
+  },
 };

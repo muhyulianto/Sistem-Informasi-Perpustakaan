@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <div class="card">
+      <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between">
           <h5 class="card-title mb-0 py-1">Data pengembalian</h5>
           <a href="api/pengembalian/download">Download data pengembalian</a>
@@ -16,12 +16,7 @@
             "
             class="input-group"
           >
-            <input
-              type="search"
-              class="form-control"
-              v-model="search_query"
-              required
-            />
+            <input type="search" class="form-control" v-model="search_query" required />
             <span class="input-group-btn">
               <button class="btn btn-primary" type="submit">
                 <span class="fa fa-search" aria-hidden="true"></span> search!
@@ -51,23 +46,21 @@
                     href
                     data-toggle="modal"
                     :data-target="'#info__user' + kembali.id_user"
-                    >{{ kembali.user.name }}</a
-                  >
+                  >{{ kembali.user.name }}</a>
                 </td>
                 <td>
                   <a
                     href
                     data-toggle="modal"
                     :data-target="'#info__buku' + kembali.id_buku"
-                    >{{ kembali.buku.judul_buku }}</a
-                  >
+                  >{{ kembali.buku.judul_buku }}</a>
                 </td>
                 <td>{{ kembali.tanggal_pinjam | moment("DD MMMM YYYY") }}</td>
                 <td>
                   <!-- prettier-ignore -->
                   <a
                     href="#"
-                    @click.prevent=""
+                    @click.prevent
                     type="button"
                     data-toggle="popover"
                     data-html="true"
@@ -80,9 +73,7 @@
                     + '<br/>' + 
                     'Terlambat: ' + kembali.telat + ' Hari'
                     "
-                  >
-                    {{ kembali.dikembalikan_tanggal | moment("DD MMMM YYYY") }}
-                  </a>
+                  >{{ kembali.dikembalikan_tanggal | moment("DD MMMM YYYY") }}</a>
                 </td>
                 <td>Rp.{{ kembali.denda }},-</td>
               </tr>
@@ -93,12 +84,8 @@
             :key="'info_user' + j"
             :parentData="info_user"
           />
-          <div class="modal-info" v-for="(data, h) in data_peminjaman.data">
-            <modalInfo
-              :key="'info_buku' + h"
-              v-bind:isPeminjaman="true"
-              :parentData="data.buku"
-            />
+          <div class="modal-info" v-for="(data, h) in data_peminjaman.data" :key="h">
+            <modalInfo :key="'info_buku' + h" v-bind:isPeminjaman="true" :parentData="data.buku" />
           </div>
         </div>
       </div>
@@ -106,24 +93,17 @@
   </div>
 </template>
 <script>
-import { searchMixin } from "../mixins/searchMixin.js";
 import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
+import { paginationMixin } from "../mixins/paginationMixin.js";
 import modalUser from "./modal/modal-user.vue";
 import modalInfo from "./modal/modal-info.vue";
 
 export default {
-  mixins: [searchMixin, peminjamanMixin],
+  mixins: [paginationMixin, peminjamanMixin],
 
   components: {
     modalUser,
     modalInfo
-  },
-
-  data() {
-    return {
-      data_peminjaman: {},
-      search_query: ""
-    };
   },
 
   mounted() {

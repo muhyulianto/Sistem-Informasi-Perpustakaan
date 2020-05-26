@@ -2,7 +2,7 @@
   <div class="modal__data">
     <!-- Modal -->
     <div :id="'pinjam' + parentData.id" class="modal" role="dialog">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">

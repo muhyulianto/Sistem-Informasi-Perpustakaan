@@ -2,57 +2,60 @@
   <div class="row">
     <template v-if="$auth.check(['roles', 2])">
       <div class="col-md-3">
-        <div class="card bg-info text-white mb-4">
-          <div class="card-header bg-info">
-            Jumlah buku yang di pinjam hari ini
-          </div>
+        <div class="card bg-info text-white shadow-sm mb-4">
+          <div class="card-header bg-info">Jumlah buku yang di pinjam hari ini</div>
           <div class="card-body">
             <h5>{{ buku != "" ? buku + " Buku" : "-" }}</h5>
           </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="card bg-success text-white mb-4">
-          <div class="card-header bg-success">
-            Jumlah user yang meminjam buku hari ini
-          </div>
+        <div class="card bg-success text-white shadow-sm mb-4">
+          <div class="card-header bg-success">Jumlah user yang meminjam buku hari ini</div>
           <div class="card-body">
             <h5>{{ pinjam != "" ? pinjam + " User" : "-" }}</h5>
           </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="card bg-warning text-white mb-4">
-          <div class="card-header bg-warning">
-            Buku yang paling sering di pinjam
-          </div>
+        <div class="card bg-warning text-white shadow-sm mb-4">
+          <div class="card-header bg-warning">Buku yang paling sering di pinjam</div>
           <div class="card-body">
-            <h5 class="text-truncate">
-              {{ bukuPalingDiPinjam != "" ? bukuPalingDiPinjam : "-" }}
-            </h5>
+            <h5 class="text-truncate">{{ bukuPalingDiPinjam != "" ? bukuPalingDiPinjam : "-" }}</h5>
           </div>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="card bg-danger text-white mb-4">
-          <div class="card-header bg-danger">
-            User yang paling sering meminjam buku
-          </div>
+        <div class="card bg-danger text-white shadow-sm mb-4">
+          <div class="card-header bg-danger">User yang paling sering meminjam buku</div>
           <div class="card-body">
-            <h5 class="text-truncate">
-              {{ userPalingMeminjam != "" ? userPalingMeminjam : "-" }}
-            </h5>
+            <h5 class="text-truncate">{{ userPalingMeminjam != "" ? userPalingMeminjam : "-" }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <canvas id="canvas"></canvas>
           </div>
         </div>
       </div>
     </template>
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <canvas id="canvas"></canvas>
+    <template v-if="$auth.check(['roles', 1])">
+      <div class="col-lg-12 mb-3">
+        <div class="card bg-primary text-white">
+          <div
+            class="card-body text-center font-weight-bold"
+          >SELAMAT DATANG DI SISTEM INFORMASI PERPUSTAKAAN SDN 100 KONOHAGAKURE</div>
         </div>
       </div>
-    </div>
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-header">Jumlah buku yang telah anda pinjam</div>
+          <div class="card-body">100 Buku</div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 

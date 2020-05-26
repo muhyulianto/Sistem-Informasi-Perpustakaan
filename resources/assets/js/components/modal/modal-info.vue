@@ -19,137 +19,143 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="row justify-content-between">
-              <div class="col-md-4">
+            <div class="row align-items-center">
+              <div class="col-lg-6">
                 <img
-                  class="w-100 h-100 object-cover"
+                  class="img-fluid object-cover d-block mx-auto"
                   :src="'./uploads/' + parentData.namaGambar"
                   alt=""
                 />
-                <div :class="isEditing ? 'input-group mt-n5 p-1' : 'd-none'">
-                  <div class="custom-file">
-                    <input
-                      type="file"
-                      class="custom-file-input"
-                      id="inputGroupFile01"
-                      aria-describedby="inputGroupFileAddon01"
-                      @change="uploadGambar($event)"
-                    />
-                    <label
-                      class="custom-file-label overflow-hidden"
-                      for="inputGroupFile01"
-                      >{{ namaGambar }}</label
-                    >
-                  </div>
-                </div>
               </div>
-              <div class="col-md-8">
-                <table class="table table-borderless table-sm w-auto m-0">
-                  <tbody>
-                    <tr>
-                      <th class="align-middle">Judul buku</th>
-                      <td>
-                        <input
-                          type="text"
-                          :id="'info__judulBuku-' + parentData.id"
-                          :class="
-                            isEditing
-                              ? 'form-control '
-                              : 'form-control-plaintext'
-                          "
-                          :readonly="readonly"
-                          :value="parentData.judul_buku"
-                          ref="judul_buku"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="align-middle">Pengarang</th>
-                      <td class="w-75">
-                        <input
-                          type="text"
-                          id="input_pengarang"
-                          :class="
-                            isEditing
-                              ? 'form-control'
-                              : 'form-control-plaintext'
-                          "
-                          :readonly="readonly"
-                          :value="parentData.pengarang"
-                          ref="pengarang"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="align-middle">Tahun terbit</th>
-                      <td class="w-75">
-                        <input
-                          type="text"
-                          id="input_tahunTerbit"
-                          :class="
-                            isEditing
-                              ? 'form-control'
-                              : 'form-control-plaintext'
-                          "
-                          :readonly="readonly"
-                          :value="parentData.tahun_terbit"
-                          ref="tahun_terbit"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="align-middle">Penerbit</th>
-                      <td class="w-75">
-                        <input
-                          type="text"
-                          id="input_penerbit"
-                          :class="
-                            isEditing
-                              ? 'form-control'
-                              : 'form-control-plaintext'
-                          "
-                          :readonly="readonly"
-                          :value="parentData.penerbit"
-                          ref="penerbit"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="align-middle">Jenis buku</th>
-                      <td class="w-75">
-                        <input
-                          type="text"
-                          id="input_jenisBuku"
-                          :class="
-                            isEditing
-                              ? 'form-control'
-                              : 'form-control-plaintext'
-                          "
-                          :readonly="readonly"
-                          :value="parentData.jenis_buku"
-                          ref="jenis_buku"
-                        />
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="align-middle">Lokasi rak</th>
-                      <td class="w-75">
-                        <input
-                          type="text"
-                          id="input_lokasiRak"
-                          :class="
-                            isEditing
-                              ? 'form-control'
-                              : 'form-control-plaintext'
-                          "
-                          :readonly="readonly"
-                          :value="parentData.lokasi_rak"
-                          ref="lokasi_rak"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div class="col-lg-6">
+                <div class="table-responsive">
+                  <table class="table table-sm m-0">
+                    <tbody>
+                      <tr>
+                        <td class="align-middle text-muted border-0" style="width: 30%">Judul buku</td>
+                        <td class="border-0">
+                          <input
+                            type="text"
+                            :id="'info__judulBuku-' + parentData.id"
+                            :class="
+                              isEditing
+                                ? 'form-control '
+                                : 'form-control-plaintext text-right'
+                            "
+                            :readonly="readonly"
+                            :value="parentData.judul_buku"
+                            ref="judul_buku"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle text-muted">Pengarang</td>
+                        <td class="w-75">
+                          <input
+                            type="text"
+                            id="input_pengarang"
+                            :class="
+                              isEditing
+                                ? 'form-control'
+                                : 'form-control-plaintext text-right'
+                            "
+                            :readonly="readonly"
+                            :value="parentData.pengarang"
+                            ref="pengarang"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle text-muted">Tahun terbit</td>
+                        <td class="w-75">
+                          <input
+                            type="text"
+                            id="input_tahunTerbit"
+                            :class="
+                              isEditing
+                                ? 'form-control'
+                                : 'form-control-plaintext text-right'
+                            "
+                            :readonly="readonly"
+                            :value="parentData.tahun_terbit"
+                            ref="tahun_terbit"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle text-muted">Penerbit</td>
+                        <td class="w-75">
+                          <input
+                            type="text"
+                            id="input_penerbit"
+                            :class="
+                              isEditing
+                                ? 'form-control'
+                                : 'form-control-plaintext text-right'
+                            "
+                            :readonly="readonly"
+                            :value="parentData.penerbit"
+                            ref="penerbit"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle text-muted">Jenis buku</td>
+                        <td class="w-75">
+                          <input
+                            type="text"
+                            id="input_jenisBuku"
+                            :class="
+                              isEditing
+                                ? 'form-control'
+                                : 'form-control-plaintext text-right'
+                            "
+                            :readonly="readonly"
+                            :value="parentData.jenis_buku"
+                            ref="jenis_buku"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="align-middle text-muted">Lokasi rak</td>
+                        <td class="w-75">
+                          <input
+                            type="text"
+                            id="input_lokasiRak"
+                            :class="
+                              isEditing
+                                ? 'form-control'
+                                : 'form-control-plaintext text-right'
+                            "
+                            :readonly="readonly"
+                            :value="parentData.lokasi_rak"
+                            ref="lokasi_rak"
+                          />
+                        </td>
+                      </tr>
+                      <tr :class="isEditing ? 'd-show' : 'd-none'">
+                        <td class="align-middle text-muted">Gambar</td>
+                        <td>
+                          <div class="custom-file">
+                            <input
+                              type="file"
+                              class="custom-file-input"
+                              id="inputGroupFile01"
+                              aria-describedby="inputGroupFileAddon01"
+                              @change="uploadGambar($event)"
+                            />
+                            <label
+                              class="custom-file-label overflow-hidden"
+                              for="inputGroupFile01"
+                              >{{ namaGambar }}</label
+                            >
+                          </div>
+                          <div class="input-group"></div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 <template>
   <div v-if="$auth.check()">
-    <nav class="sidenav">
+    <nav class="sidenav shadow-sm">
       <div class="sidenav__img">
         <img
           width="200"
