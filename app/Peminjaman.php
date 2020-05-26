@@ -14,8 +14,6 @@ class Peminjaman extends Model
       return $this->belongsTo('App\Buku', 'id_buku');
     }
 
-    public $timestamps = false;
-
     protected $fillable = [
       "id_user", "id_buku", "tanggal_pinjam", "tanggal_kembali"
     ];

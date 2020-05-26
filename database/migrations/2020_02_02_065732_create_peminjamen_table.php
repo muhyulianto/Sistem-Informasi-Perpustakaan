@@ -22,6 +22,7 @@ class CreatePeminjamenTable extends Migration
             $table->dateTime('dikembalikan_tanggal')->nullable();
             $table->integer('telat')->nullable();
             $table->integer('denda')->nullable();
+            $table->timestamps();
         });
     }
 
