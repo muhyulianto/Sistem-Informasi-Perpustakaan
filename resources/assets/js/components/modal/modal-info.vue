@@ -5,8 +5,8 @@
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
-          <div class="modal-header">
-            <div class="modal-title">
+          <div class="modal-header border-0">
+            <div class="modal-title font-weight-bold">
               Informasi lengkap buku
             </div>
             <button
@@ -18,21 +18,27 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="row align-items-center">
-              <div class="col-lg-6">
+          <div class="modal-body mb-4">
+            <div class="row align-items-center justify-content-center">
+              <div class="col-lg-4">
                 <img
-                  class="img-fluid object-cover d-block mx-auto"
+                  style="height: 300px"
+                  class="img-fluid"
                   :src="'./uploads/' + parentData.namaGambar"
-                  alt=""
+                  alt
                 />
               </div>
               <div class="col-lg-6">
                 <div class="table-responsive">
-                  <table class="table table-sm m-0">
+                  <table class="table table-borderless table-sm m-0">
                     <tbody>
                       <tr>
-                        <td class="align-middle text-muted border-0" style="width: 30%">Judul buku</td>
+                        <td
+                          class="align-middle text-muted border-0"
+                          style="width: 30%"
+                        >
+                          Judul buku
+                        </td>
                         <td class="border-0">
                           <input
                             type="text"
@@ -160,7 +166,7 @@
             </div>
           </div>
           <div
-            class="modal-footer"
+            class="modal-footer border-0"
             v-if="$auth.user().role == 2 && $attrs.isPeminjaman != true"
           >
             <button

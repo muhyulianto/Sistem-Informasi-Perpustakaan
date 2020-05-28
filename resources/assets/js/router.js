@@ -14,7 +14,7 @@ import notFound from "./components/404";
 export const routes = [
   {
     path: "*/404",
-    component: notFound
+    component: notFound,
   },
   {
     path: "/",
@@ -23,18 +23,38 @@ export const routes = [
     children: [
       { path: "", name: "index", component: Index, meta: { auth: false } },
       { path: "login", name: "login", component: Login, meta: { auth: false } },
-      { path: "register", name: "register", component: Register, meta: { auth: false } }
-    ]
+      {
+        path: "register",
+        name: "register",
+        component: Register,
+        meta: { auth: false },
+      },
+    ],
   },
   {
     path: "/",
     component: Authorized,
     meta: { auth: true },
     children: [
-      { path: "dashboard", name: "dashboard", component: Dashboard, meta: { auth: true } },
+      {
+        path: "dashboard",
+        name: "dashboard",
+        component: Dashboard,
+        meta: { auth: true },
+      },
       { path: "buku", name: "buku", component: Buku, meta: { auth: true } },
-      { path: "peminjaman", name: "peminjaman", component: Peminjaman, meta: { auth: true } },
-      { path: "pengembalian", name: "pengembalian", component: Pengembalian, meta: { auth: true } }
-    ]
-  }
+      {
+        path: "peminjaman",
+        name: "peminjaman",
+        component: Peminjaman,
+        meta: { auth: true },
+      },
+      {
+        path: "pengembalian",
+        name: "pengembalian",
+        component: Pengembalian,
+        meta: { auth: true },
+      },
+    ],
+  },
 ];

@@ -1,31 +1,39 @@
 <template>
   <div class="row">
     <div class="col">
-      <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between">
-          <h5 class="card-title mb-0 py-1">Data pengembalian</h5>
-          <a href="api/pengembalian/download">Download data pengembalian</a>
-        </div>
-        <div class="card-body">
+      <div class="card">
+        <div class="card-header d-flex flex-wrap align-items-end">
+          <div class="card-title font-weight-bold text-uppercase mb-0 py-1">
+            Data peminjaman
+          </div>
+          <button class="btn btn-secondary btn-sm ml-auto" @click="reset()">
+            Reset pencarian
+          </button>
           <form
             v-on:submit.prevent="
-              fetchPeminjaman({
-                search_query: search_query,
-                pengembalian: true
-              })
+              fetchPeminjaman({ search_query: search_query })
             "
-            class="input-group"
+            class="input-group w-25 ml-2"
           >
-            <input type="search" class="form-control" v-model="search_query" required />
+            <input
+              type="search"
+              class="form-control form-control-sm"
+              v-model="search_query"
+              required
+            />
             <span class="input-group-btn">
-              <button class="btn btn-primary" type="submit">
+              <button class="btn btn-primary btn-sm" type="submit">
                 <span class="fa fa-search" aria-hidden="true"></span> search!
               </button>
             </span>
           </form>
+          <a
+            class="btn btn-sm btn-primary ml-2"
+            href="api/pengembalian/download"
+          >
+            <span class="fa fa-download"></span> Download data
+          </a>
         </div>
-      </div>
-      <div class="card">
         <div class="card-body">
           <table class="table table-no-border-top text-gray-900">
             <thead>
@@ -46,14 +54,16 @@
                     href
                     data-toggle="modal"
                     :data-target="'#info__user' + kembali.id_user"
-                  >{{ kembali.user.name }}</a>
+                    >{{ kembali.user.name }}</a
+                  >
                 </td>
                 <td>
                   <a
                     href
                     data-toggle="modal"
                     :data-target="'#info__buku' + kembali.id_buku"
-                  >{{ kembali.buku.judul_buku }}</a>
+                    >{{ kembali.buku.judul_buku }}</a
+                  >
                 </td>
                 <td>{{ kembali.tanggal_pinjam | moment("DD MMMM YYYY") }}</td>
                 <td>
@@ -84,8 +94,16 @@
             :key="'info_user' + j"
             :parentData="info_user"
           />
-          <div class="modal-info" v-for="(data, h) in data_peminjaman.data" :key="h">
-            <modalInfo :key="'info_buku' + h" v-bind:isPeminjaman="true" :parentData="data.buku" />
+          <div
+            class="modal-info"
+            v-for="(data, h) in data_peminjaman.data"
+            :key="h"
+          >
+            <modalInfo
+              :key="'info_buku' + h"
+              v-bind:isPeminjaman="true"
+              :parentData="data.buku"
+            />
           </div>
         </div>
       </div>

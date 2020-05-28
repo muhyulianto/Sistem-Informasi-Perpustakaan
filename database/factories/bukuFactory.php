@@ -10,6 +10,6 @@ $factory->define(App\Buku::class, function (Faker $faker) {
       'penerbit' => $faker->company,
       'jenis_buku' => $faker->randomElement($array = array ('tutorial','sains','cerita')),
       'lokasi_rak' => $faker->randomElement($array = array ('A1','B2','C3')),
-      'namaGambar' => 'placeholder.jpg'
+      'namaGambar' => 'placeholder.jpeg'
     ];
 });

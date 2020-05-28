@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Peminjaman;
+use App\Buku;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
 use DB;
+use App\Exports\UsersExport;
 
 class PeminjamanController extends Controller
 {
@@ -23,7 +25,7 @@ class PeminjamanController extends Controller
             $peminjaman = Peminjaman::with(['user', 'buku'])
                 ->where('id_user', $request->id)
                 ->whereNull('dikembalikan_tanggal')
-                ->orderBy('tanggal_pinjam', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->paginate($request->entries);
 
             return response()->json([
@@ -45,7 +47,7 @@ class PeminjamanController extends Controller
                         $query->where('judul_buku', 'like',  "%{$request->search_query}%")
                         ->whereNotNull('dikembalikan_tanggal');
                     })
-                    ->orderBy('dikembalikan_tanggal', 'desc')->paginate(10);
+                    ->orderBy('created_at', 'desc')->paginate(10);
 
                 return response()->json([
                   'data_peminjaman' => $peminjaman
@@ -61,7 +63,7 @@ class PeminjamanController extends Controller
                     $query->where('judul_buku', 'like',  "%{$request->search_query}%")
                     ->whereNull('dikembalikan_tanggal');
                 })
-                ->orderBy('tanggal_pinjam', 'desc')->paginate($request->entries);
+                ->orderBy('created_at', 'desc')->paginate($request->entries);
 
             return response()->json([
               'data_peminjaman' => $peminjaman
@@ -89,22 +91,59 @@ class PeminjamanController extends Controller
             ->selectRaw('count(id_buku) as jumlah')
             ->groupBy('id_buku')
             ->orderBy('jumlah', 'DESC')
-            ->limit(1)
-            ->get();
+            ->first();
 
         $userPalingBanyakMeminjam = Peminjaman::select('id_user')
             ->with('user')
             ->selectRaw('count(id_user) as jumlah')
             ->groupBy('id_user')
             ->orderBy('jumlah', 'DESC')
-            ->limit(1)
-            ->get();
+            ->first();
 
         return response() -> json([
             'userMeminjamBukuHariIni' => $userMeminjamBukuHariIni,
             'bukuDiPinjamHariIni' => $bukuDiPinjamHariIni,
             'userPalingBanyakMeminjam' => $userPalingBanyakMeminjam,
             'bukuPalingBanyakPinjam' => $bukuPalingBanyakPinjam
+        ]);
+    }
+    
+    /**
+     * 
+     * Show the data for dashboard menu user.
+     * 
+     */
+    public function dashboard_user(Request $request) {
+        $jumlah_pinjam_hari_ini = Peminjaman::where('id_user', $request->id_user)
+            ->whereDate('tanggal_pinjam', Carbon::today())
+            ->count();
+        
+        $jumlah_pinjam_hari_all = Peminjaman::where('id_user', $request->id_user)
+            ->count();
+
+        $buku_sering_dipinjam = Peminjaman::select('id_buku')
+            ->where('id_user', $request->id_user)
+            ->with('buku')
+            ->selectRaw('count(id_buku) as jumlah')
+            ->groupBy('id_buku')
+            ->orderBy('jumlah', 'DESC')
+            ->first();
+
+        $buku_terakhir_dipinjam = Peminjaman::where('id_user', $request->id_user)
+            ->with('buku')
+            ->orderBy('created_at', 'DESC')
+            ->first();
+        
+        $daftar_buku_baru = Buku::orderBy('created_at', 'DESC')
+        ->take(5)
+        ->get();
+
+        return response() -> json([
+            'jumlah_pinjam_all' => $jumlah_pinjam_hari_all,
+            'jumlah_pinjam_hari_ini' => $jumlah_pinjam_hari_ini,
+            'buku_sering_dipinjam' => $buku_sering_dipinjam,
+            'buku_terakhir_dipinjam' => $buku_terakhir_dipinjam,
+            'daftar_buku_baru' => $daftar_buku_baru
         ]);
     }
 
@@ -188,7 +227,7 @@ class PeminjamanController extends Controller
      **/
     public function download()
     {
-       return Excel::download(new UsersExport, 'users.xlsx'); 
+       return \Excel::download(new UsersExport, 'data_buku_yang_dipinjam.xlsx'); 
     }
 
 

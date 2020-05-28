@@ -38,10 +38,14 @@ Route::group(['middleware' => 'auth:api'], function(){
 
 Route::resource('data', 'DataController');
 Route::resource('peminjaman', 'PeminjamanController');
+
 Route::post('/dashboard/pinjam', 'PeminjamanController@dashboard');
 Route::post('/dashboard/chartData', 'PeminjamanController@chartData');
+Route::post('/dashboard/pinjam_user', 'PeminjamanController@dashboard_user');
+
 Route::resource('pengembalian', 'PengembalianController')->only([
   'index'
 ]);
+
 Route::post('/kembalikanBuku', 'PeminjamanController@kembalikanBuku');
 Route::get('/pengembalian/download', 'PeminjamanController@download');

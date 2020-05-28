@@ -5,8 +5,10 @@
       <div class="modal-dialog modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
-          <div class="modal-header">
-            <div class="modal-title">Informasi lengkap user</div>
+          <div class="modal-header border-0">
+            <div class="modal-title font-weight-bold">
+              Informasi lengkap user
+            </div>
             <button
               type="button"
               class="close"

@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Pengembalian;
+use App\Peminjaman;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -15,7 +15,7 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping, ShouldAu
     */
     public function collection()
     {
-        return Pengembalian::with(['user', 'buku'])->get();
+        return Peminjaman::with(['user', 'buku'])->whereNotNull('dikembalikan_tanggal')->get();
     }
 
     public function headings(): array
@@ -32,17 +32,17 @@ class UsersExport implements FromCollection, WithHeadings, WithMapping, ShouldAu
         ];
     }
 
-    public function map($pengembalian): array
+    public function map($peminjaman): array
     {
         return [
-            $pengembalian->id,
-            $pengembalian->user->name,
-            $pengembalian->buku->judul_buku,
-            $pengembalian->tanggal_pinjam,
-            $pengembalian->tanggal_kembali,
-            $pengembalian->dikembalikan_tanggal,
-            $pengembalian->telat,
-            $pengembalian->denda
+            $peminjaman->id,
+            $peminjaman->user->name,
+            $peminjaman->buku->judul_buku,
+            $peminjaman->tanggal_pinjam,
+            $peminjaman->tanggal_kembali,
+            $peminjaman->dikembalikan_tanggal,
+            $peminjaman->telat,
+            $peminjaman->denda
         ];
     }
 

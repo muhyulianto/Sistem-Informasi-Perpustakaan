@@ -12,6 +12,6 @@ $factory->define(App\Peminjaman::class, function (Faker $faker) {
       'id_user' => User::all()->random()->id,
       'id_buku' => Buku::all()->random()->id,
       'tanggal_pinjam' => Carbon::createFromTimeStamp($date->getTimestamp()),
-      'tanggal_kembali' => Carbon::createFromFormat('Y-m-d H:i:s', Carbon::createFromTimeStamp($date->getTimestamp()))->addDays(3)
+      'tanggal_kembali' => Carbon::createFromTimeStamp($date->getTimestamp())->addDays(3)
     ];
 });

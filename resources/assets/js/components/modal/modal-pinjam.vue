@@ -5,14 +5,9 @@
       <div class="modal-dialog modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
-          <div class="modal-header">
-            <div class="modal-title">Pilih durasi peminjaman</div>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+          <div class="modal-header border-0">
+            <div class="modal-title font-weight-bold">Pilih durasi peminjaman</div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -22,25 +17,19 @@
                 <button
                   @click="pinjam($auth.user().id, parentData.id, 1)"
                   class="btn btn-success btn-sm btn-block"
-                >
-                  1 Hari
-                </button>
+                >1 Hari</button>
               </div>
               <div class="col-lg-4">
                 <button
                   @click="pinjam($auth.user().id, parentData.id, 3)"
                   class="btn btn-success btn-sm btn-block"
-                >
-                  3 Hari
-                </button>
+                >3 Hari</button>
               </div>
               <div class="col-lg-4">
                 <button
                   @click="pinjam($auth.user().id, parentData.id, 7)"
                   class="btn btn-success btn-sm btn-block"
-                >
-                  7 Hari
-                </button>
+                >7 Hari</button>
               </div>
             </div>
           </div>
@@ -95,6 +84,8 @@ export default {
             type: "error",
             title: "Oops!",
             text: error.response.data.errors
+          }).then(() => {
+            $(".modal").modal("hide");
           });
         });
     }

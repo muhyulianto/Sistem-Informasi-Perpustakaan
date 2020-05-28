@@ -3,8 +3,12 @@
     <div class="col">
       <div class="card shadow-sm">
         <div class="card-header d-flex flex-wrap align-items-end">
-          <div class="card-title font-weight-bold text-uppercase mb-0 py-1">Data peminjaman</div>
-          <button class="btn btn-secondary btn-sm ml-auto" @click="reset()">Reset pencarian</button>
+          <div class="card-title font-weight-bold text-uppercase mb-0 py-1">
+            Data peminjaman
+          </div>
+          <button class="btn btn-secondary btn-sm ml-auto" @click="reset()">
+            Reset pencarian
+          </button>
           <form
             v-on:submit.prevent="
               fetchPeminjaman({ search_query: search_query })
@@ -33,6 +37,7 @@
                 <th>Judul buku</th>
                 <th>Tanggal pinjam</th>
                 <th>Tanggal kembali</th>
+                <th v-if="$auth.check(1)">Status</th>
                 <th v-if="$auth.user().role == 2">Aksi</th>
               </tr>
             </thead>
@@ -44,28 +49,52 @@
                     href
                     data-toggle="modal"
                     :data-target="'#info__user' + pinjam.id_user"
-                  >{{ pinjam.user.name }}</a>
+                    >{{ pinjam.user.name }}</a
+                  >
                 </td>
                 <td class="align-middle">
                   <a
                     href
                     data-toggle="modal"
                     :data-target="'#info__buku' + pinjam.id_buku"
-                  >{{ pinjam.buku.judul_buku }}</a>
+                    >{{ pinjam.buku.judul_buku }}</a
+                  >
                 </td>
-                <td class="align-middle">{{ pinjam.tanggal_pinjam | moment("DD MMMM YYYY") }}</td>
-                <td class="align-middle">{{ pinjam.tanggal_kembali | moment("DD MMMM YYYY") }}</td>
+                <td class="align-middle">
+                  {{ pinjam.tanggal_pinjam | moment("DD MMMM YYYY") }}
+                </td>
+                <td class="align-middle">
+                  {{ pinjam.tanggal_kembali | moment("DD MMMM YYYY") }}
+                </td>
+                <td v-if="$auth.check(1)">
+                  {{
+                    pinjam.tanggal_kembali <
+                    moment().format("YYYY-MM-DD HH:MM:SS")
+                      ? "Terlambat"
+                      : "Dipinjam"
+                  }}
+                </td>
                 <td v-if="$auth.user().role == 2">
                   <button
                     @click.prevent="returnBuku(pinjam.id)"
                     class="btn btn-primary btn-sm"
-                  >Kembali</button>
+                  >
+                    Kembali
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
-          <div class="modal-info" v-for="(data, h) in data_peminjaman.data" :key="h">
-            <modalInfo :key="'info_buku' + h" v-bind:isPeminjaman="true" :parentData="data.buku" />
+          <div
+            class="modal-info"
+            v-for="(data, h) in data_peminjaman.data"
+            :key="h"
+          >
+            <modalInfo
+              :key="'info_buku' + h"
+              v-bind:isPeminjaman="true"
+              :parentData="data.buku"
+            />
           </div>
           <modalUser
             v-for="(info_user, j) in data_peminjaman.data"
@@ -80,7 +109,9 @@
                   v-model="data_entries"
                   class="form-control form-control-sm mx-2"
                   id="entry-show"
-                  @change="fetchPeminjaman({ page: data_peminjaman.current_page })"
+                  @change="
+                    fetchPeminjaman({ page: data_peminjaman.current_page })
+                  "
                 >
                   <option value="10">10</option>
                   <option value="15">15</option>
@@ -102,7 +133,9 @@
                     class="page-link"
                     href="#"
                     @click.prevent="
-                      fetchPeminjaman({ page: data_peminjaman.current_page - 1 })
+                      fetchPeminjaman({
+                        page: data_peminjaman.current_page - 1
+                      })
                     "
                   >
                     <span class="fa fa-angle-double-left"></span>
@@ -123,14 +156,17 @@
                     @click.prevent="
                       halaman == '...' ? '' : fetchPeminjaman({ page: halaman })
                     "
-                  >{{ halaman }}</a>
+                    >{{ halaman }}</a
+                  >
                 </li>
                 <li class="page-item">
                   <a
                     class="page-link"
                     href="#"
                     @click.prevent="
-                      fetchPeminjaman({ page: data_peminjaman.current_page + 1 })
+                      fetchPeminjaman({
+                        page: data_peminjaman.current_page + 1
+                      })
                     "
                   >
                     <span class="fa fa-angle-double-right"></span>
@@ -160,6 +196,12 @@ export default {
 
   mounted() {
     this.fetchPeminjaman({});
+  },
+
+  computed: {
+    telat: () => {
+      return "berhasil";
+    }
   },
 
   methods: {
