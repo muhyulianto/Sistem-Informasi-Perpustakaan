@@ -31,21 +31,16 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::group(['middleware' => 'auth:api'], function(){
-    // Users
     Route::get('users', 'UserController@index')->middleware('isAdmin');
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
+
+    Route::resource('data', 'DataController');
+    Route::resource('peminjaman', 'PeminjamanController');
+
+    Route::post('/dashboard/pinjam', 'PeminjamanController@dashboard');
+    Route::post('/dashboard/chartData', 'PeminjamanController@chartData');
+    Route::post('/dashboard/pinjam_user', 'PeminjamanController@dashboard_user');
+
+    Route::post('/kembalikanBuku', 'PeminjamanController@kembalikanBuku');
+    Route::get('/pengembalian/download', 'PeminjamanController@download');
 });
-
-Route::resource('data', 'DataController');
-Route::resource('peminjaman', 'PeminjamanController');
-
-Route::post('/dashboard/pinjam', 'PeminjamanController@dashboard');
-Route::post('/dashboard/chartData', 'PeminjamanController@chartData');
-Route::post('/dashboard/pinjam_user', 'PeminjamanController@dashboard_user');
-
-Route::resource('pengembalian', 'PengembalianController')->only([
-  'index'
-]);
-
-Route::post('/kembalikanBuku', 'PeminjamanController@kembalikanBuku');
-Route::get('/pengembalian/download', 'PeminjamanController@download');

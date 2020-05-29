@@ -36,7 +36,6 @@ class PeminjamanController extends Controller
 
         // Jika admin
         else {
-
             // mengambil buku yang sudah dikembalikan
             if ($request->has('pengembalian')) {
                 $peminjaman = peminjaman::with(['user', 'buku'])
