@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center min-vh-100">
     <div class="col-lg-4 align-self-center">
-      <div class="card">
+      <div class="card shadow-sm">
         <div class="card-header">
           <h5 class="card-title mb-0">Login</h5>
         </div>

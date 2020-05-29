@@ -10,7 +10,10 @@
       <div class="card shadow-sm mb-3">
         <div class="card-header">
           <div class="card-title">
-            <h3>Perpustakaan</h3>
+            <h3>
+              <span class="fa fa-search"></span>
+              Pencari buku
+            </h3>
           </div>
         </div>
         <div class="card-body">
