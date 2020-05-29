@@ -7,7 +7,7 @@
           : 'col-lg-8 align-self-center'
       "
     >
-      <div class="card">
+      <div class="card shadow-sm mb-3">
         <div class="card-header">
           <div class="card-title">
             <h3>Perpustakaan</h3>
@@ -29,7 +29,7 @@
           </form>
         </div>
       </div>
-      <div class="card" v-if="has_data_buku == true">
+      <div class="card shadow-sm" v-if="has_data_buku == true">
         <div class="card-body">
           <table class="table table-no-border-top">
             <thead>
@@ -115,10 +115,11 @@
 
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
+import { paginationMixin } from "../mixins/paginationMixin.js";
 import modalInfo from "./modal/modal-info.vue";
 
 export default {
-  mixins: [searchMixin],
+  mixins: [searchMixin, paginationMixin],
 
   components: {
     modalInfo

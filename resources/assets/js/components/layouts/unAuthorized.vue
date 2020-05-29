@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm"
+    >
       <div class="container">
         <span class="fa fa-2x fa-book mr-2"></span>
         <button
