@@ -8,23 +8,17 @@ export const peminjamanMixin = {
   },
 
   methods: {
-    fethUser() {
-      return axios
-        .get("api/auth/user", {
-          params: {},
-        })
-        .then((response) => {
-          if (response.data.data.role == 2) {
-            return null;
-          }
-          return response.data.data.id;
-        });
+    checkRole() {
+      if (this.$auth.user().role == 2) {
+        return null;
+      }
+      return this.$auth.user().role;
     },
 
     async fetchPeminjaman(data) {
-      const { search_query, page, pengembalian } = data;
+      const { page, pengembalian, search_query, id_user } = data;
       this.$store.commit("TOGGLE_LOADING", true);
-      let tunggu = await this.fethUser();
+      let tunggu = await this.checkRole();
       axios
         .get("api/peminjaman", {
           // run something here
@@ -34,6 +28,7 @@ export const peminjamanMixin = {
             entries: this.data_entries,
             pengembalian: pengembalian,
             search_query: search_query,
+            id_user: id_user
           },
         })
         .then((response) => {
