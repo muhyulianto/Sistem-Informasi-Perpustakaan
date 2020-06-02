@@ -119,12 +119,8 @@ export default {
 
     chartData() {
       return axios.post("api/dashboard/chartData").then(response => {
-        response.data.chartdata.forEach(element =>
-          this.tanggal.push(element.date)
-        );
-        response.data.chartdata.forEach(element =>
-          this.jumlah.push(element.jumlah)
-        );
+        this.tanggal = response.data.tanggal;
+        this.jumlah = response.data.jumlah;
       });
     }
   }

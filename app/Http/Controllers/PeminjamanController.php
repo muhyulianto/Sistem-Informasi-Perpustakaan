@@ -193,15 +193,32 @@ class PeminjamanController extends Controller
      */
     public function chartData()
     {
-        $chartdata = Peminjaman::select(DB::raw('DATE(tanggal_pinjam) as date'))
-            ->selectRaw('count(tanggal_pinjam) as jumlah')
-            ->where('tanggal_pinjam', '>=',carbon::now()->subDays('7'))
-            ->orderBy('tanggal_pinjam')
-            ->groupBy('date')
-            ->get();
+        // Data tanggal selama 7 hari
+        foreach(range(0, 7) as $day) {
+            $dates[] = Carbon::now()->subDays($day)->format('yy-m-d');
+            $tanggal = array_reverse($dates);
+        }
+
+        // Jumlah buku yang dipinjam per hari selama 1 mingggu
+        foreach($tanggal as $date){
+            $chartdata = Peminjaman::select(DB::raw('DATE(tanggal_pinjam) as date'))
+                ->selectRaw('count(tanggal_pinjam) as jumlah')
+                ->where('tanggal_pinjam', 'like', '%'.$date.'%')
+                ->orderBy('tanggal_pinjam')
+                ->groupBy('date')
+                ->pluck('jumlah')
+                ->toArray();
+
+           if($chartdata){
+               $jumlah[] = $chartdata[0];
+           }else {
+               $jumlah[] = 0;
+           }
+        }
         
         return response()->json([
-            'chartdata' => $chartdata
+            'jumlah' => $jumlah,
+            'tanggal' => $tanggal
         ]);
     }
 
@@ -241,6 +258,7 @@ class PeminjamanController extends Controller
             'jumlahdata' => $result
         ]);
     }
+
     /**
      * 
      * fungsi untuk mengembalikan buku
