@@ -38,6 +38,18 @@ class PeminjamanController extends Controller
         else {
             // mengambil buku yang sudah dikembalikan
             if ($request->has('pengembalian')) {
+                // Mengambil riwayat peminjaman terakhir user yang dipilih
+                if ($request->has('id_user')) {
+                    $peminjaman = peminjaman::with(['buku', 'user'])
+                        ->where('id_user', $request->id_user)
+                        ->orderBy('tanggal_pinjam', 'DESC')
+                        ->paginate($request->entries);
+
+                    return response()->json([
+                        'data_peminjaman' => $peminjaman
+                    ]);
+                }
+
                 $peminjaman = peminjaman::with(['user', 'buku'])
                     ->whereHas('user', function($query) use ($request){
                         $query->where('name', 'like', "%{$request->search_query}%")
@@ -46,7 +58,7 @@ class PeminjamanController extends Controller
                         $query->where('judul_buku', 'like',  "%{$request->search_query}%")
                         ->whereNotNull('dikembalikan_tanggal');
                     })
-                    ->orderBy('created_at', 'desc')->paginate(10);
+                    ->orderBy('created_at', 'desc')->paginate($request->entries);
 
                 return response()->json([
                   'data_peminjaman' => $peminjaman
@@ -194,14 +206,50 @@ class PeminjamanController extends Controller
     }
 
     /**
+     *
+     * Get data for chart js for user
+     *
+     */
+    public function chartDataUser($id)
+    {
+        // Data tanggal selama 7 hari
+        $start = Carbon::now()->subDays(7);
+        foreach (range(0, 7) as $day) {
+            $dates[] = $start->addDays(1)->format('yy-m-d');
+        }
+
+        // Jumlah buku yang dipinjam per hari selama 1 mingggu
+        foreach($dates as $date){
+            $chartdata = Peminjaman::select(DB::raw('DATE(tanggal_pinjam) as date'))
+                ->selectRaw('count(tanggal_pinjam) as jumlah')
+                ->where('tanggal_pinjam', 'like', '%'.$date.'%')
+                ->where('id_user', $id)
+                ->orderBy('tanggal_pinjam')
+                ->groupBy('date')
+                ->pluck('jumlah')
+                ->toArray();
+
+           if($chartdata){
+               $result[] = $chartdata[0];
+           }else {
+               $result[] = 0;
+           }
+        }
+        
+        return response()->json([
+            'chartdata' => $dates,
+            'jumlahdata' => $result
+        ]);
+    }
+    /**
      * 
-     * Fungsi untuk mengembalikan buku
+     * fungsi untuk mengembalikan buku
      *
      **/
-    public function kembalikanBuku(Request $request)
+    public function kembalikanbuku(request $request)
     {
-        // Mencari data berdasarkan id
-        $data_peminjaman = Peminjaman::find($request->id);
+        // mencari data berdasarkan id
+        $data_peminjaman = peminjaman::find($request->id);
         $date = strtotime($data_peminjaman->tanggal_kembali);
         if(carbon::now() > $data_peminjaman->tanggal_kembali){
           $telat = round(abs(strtotime(carbon::now()) - $date) / 86400);

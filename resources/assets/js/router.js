@@ -6,6 +6,8 @@ import Dashboard from "./components/dashboard";
 import Buku from "./components/buku";
 import Peminjaman from "./components/peminjaman";
 import Pengembalian from "./components/pengembalian";
+import User from "./components/user";
+import userShow from "./components/user_show.vue";
 import unAuthorizedLayout from "./components/layouts/unAuthorized";
 import Authorized from "./components/layouts/Authorized";
 import notFound from "./components/404";
@@ -55,6 +57,17 @@ export const routes = [
         component: Pengembalian,
         meta: { auth: true },
       },
+      {
+        path: "user",
+        name: "user",
+        component: User,
+      },
+      {
+        path: "user/:id",
+        name: "userShow",
+        component: userShow,
+        props: true
+      }
     ],
   },
 ];

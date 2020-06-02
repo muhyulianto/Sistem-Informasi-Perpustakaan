@@ -4,21 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Buku;
-use Auth;
 
 class UserController extends Controller
 {
-    public function index(){
-        $user = User::get();
+    public function index(Request $request){
+        $user = User::where('name', 'like', '%'.$request->search_query.'%')
+            ->where('role', 1)
+            ->paginate($request->entries);
+
         return response()->json([
-            'data_user' => $user->toArray()
+            'users' => $user->toArray()
         ]);
     }
 
-    public function show($id){
-        $user = User::Find($id);
-        return response()->json($user);
+    public function user(Request $request) {
+        $user = User::where('id', $request->id)->first();
+
+        return response()->json([
+            'user' => $user
+        ]);
     }
 
 }

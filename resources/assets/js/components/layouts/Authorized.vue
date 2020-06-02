@@ -29,6 +29,12 @@
           :to="{ name: 'pengembalian' }"
           >Pengembalian</router-link
         >
+        <router-link
+          class="menu__item"
+          v-if="$auth.user().role == 2"
+          :to="{ name: 'user' }"
+          >User</router-link
+        >
         <a class="menu__item" href="#" @click.prevent="$auth.logout()"
           >Logout</a
         >

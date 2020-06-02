@@ -15,10 +15,13 @@ class CreatePeminjamenTable extends Migration
     {
         Schema::create('peminjamen', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_user')->nullable();
-            $table->integer('id_buku')->nullable();
-            $table->dateTime('tanggal_pinjam')->nullable();
-            $table->dateTime('tanggal_kembali')->nullable();
+            $table->integer('id_user');
+            $table->integer('id_buku')->unsigned();
+            $table->foreign('id_buku')
+                  ->references('id')->on('bukus')
+                  ->onDelete('cascade');
+            $table->dateTime('tanggal_pinjam');
+            $table->dateTime('tanggal_kembali');
             $table->dateTime('dikembalikan_tanggal')->nullable();
             $table->integer('telat')->nullable();
             $table->integer('denda')->nullable();

@@ -6,7 +6,9 @@
           Jumlah buku yang di pinjam hari ini
         </div>
         <div class="card-body">
-          <h5>{{ buku != "" ? buku + " Buku" : "-" }}</h5>
+          <h5 class="font-weight-bold">
+            {{ buku != "" ? buku + " Buku" : "-" }}
+          </h5>
         </div>
       </div>
     </div>

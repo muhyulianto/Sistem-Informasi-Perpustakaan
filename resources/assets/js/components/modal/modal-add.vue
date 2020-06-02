@@ -5,7 +5,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header border-0">
             <div class="modal-title font-weight-bolder">Tambah data buku</div>
             <button
               type="button"

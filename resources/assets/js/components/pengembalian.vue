@@ -11,7 +11,10 @@
           </button>
           <form
             v-on:submit.prevent="
-              fetchPeminjaman({ search_query: search_query })
+              fetchPeminjaman({
+                search_query: search_query,
+                pengembalian: true
+              })
             "
             class="input-group w-25 ml-2"
           >
@@ -27,10 +30,7 @@
               </button>
             </span>
           </form>
-          <a
-            class="btn btn-sm btn-primary ml-2"
-            href="api/pengembalian/download"
-          >
+          <a href="#" v-on:click.prevent="downloadPengembalian">
             <span class="fa fa-download"></span> Download data
           </a>
         </div>
@@ -89,6 +89,82 @@
               </tr>
             </tbody>
           </table>
+          <div class="row justify-content-between">
+            <div class="col-lg-3">
+              <div class="d-flex align-items-center ml-auto">
+                <div>Display</div>
+                <select
+                  v-model="data_entries"
+                  class="form-control form-control-sm mx-2"
+                  id="entry-show"
+                  @change="fetchPeminjaman({ pengembalian: true })"
+                >
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </select>
+                <div>Entries</div>
+              </div>
+            </div>
+            <div class="col-lg-4 d-flex justify-content-end">
+              <ul class="pagination" v-if="data_peminjaman.last_page > 1">
+                <li
+                  :class="
+                    data_peminjaman.current_page - 1 < 1
+                      ? 'page-item disabled'
+                      : 'page-item'
+                  "
+                >
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="
+                      fetchPeminjaman({
+                        page: data_peminjaman.current_page - 1,
+                        pengembalian: true
+                      })
+                    "
+                  >
+                    <span class="fa fa-angle-double-left"></span>
+                  </a>
+                </li>
+                <li
+                  v-for="(halaman, i) in data_pagination"
+                  v-bind:key="i"
+                  :class="
+                    data_peminjaman.current_page == halaman
+                      ? 'page-item active'
+                      : 'page-item'
+                  "
+                >
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="
+                      halaman == '...'
+                        ? ''
+                        : fetchPeminjaman({ page: halaman, pengembalian: true })
+                    "
+                    >{{ halaman }}</a
+                  >
+                </li>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="
+                      fetchPeminjaman({
+                        page: data_peminjaman.current_page + 1,
+                        pengembalian: true
+                      })
+                    "
+                  >
+                    <span class="fa fa-angle-double-right"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
           <modalUser
             v-for="(info_user, j) in data_peminjaman.data"
             :key="'info_user' + j"
@@ -149,7 +225,7 @@ export default {
 
   methods: {
     downloadPengembalian() {
-      axios.get("api/pengembalian/download", {});
+      axios.post("api/pengembalian/download", {});
     }
   }
 };

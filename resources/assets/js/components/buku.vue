@@ -3,8 +3,12 @@
     <div class="col">
       <div class="card shadow-sm">
         <div class="card-header d-flex flex-wrap align-items-end">
-          <div class="card-title font-weight-bold text-uppercase m-0">Data buku di perpustakaan</div>
-          <button class="btn btn-secondary btn-sm ml-auto" @click="reset()">Reset pencarian</button>
+          <div class="card-title font-weight-bold text-uppercase m-0">
+            Data buku di perpustakaan
+          </div>
+          <button class="btn btn-secondary btn-sm ml-auto" @click="reset()">
+            Reset pencarian
+          </button>
           <form v-on:submit.prevent="search()" class="input-group w-25 ml-2">
             <input
               type="search"
@@ -46,18 +50,24 @@
                     class="btn btn-primary btn-sm px-3"
                     data-toggle="modal"
                     :data-target="'#info__buku' + buku.id"
-                  >Info</button>
+                  >
+                    Info
+                  </button>
                   <button
                     class="btn btn-danger btn-sm"
                     v-if="$auth.user().role == 2"
                     @click="hapus(buku.id)"
-                  >Hapus</button>
+                  >
+                    Hapus
+                  </button>
                   <button
                     class="btn btn-success btn-sm"
                     v-if="$auth.user().role == 1"
                     data-toggle="modal"
                     :data-target="'#pinjam' + buku.id"
-                  >Pinjam</button>
+                  >
+                    Pinjam
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -70,10 +80,10 @@
                   v-model="data_entries"
                   class="form-control form-control-sm mx-2"
                   id="entry-show"
-                  @change="search(data_buku.current_page)"
+                  @change="search()"
                 >
-                  <option value="5">5</option>
                   <option value="10">10</option>
+                  <option value="15">15</option>
                   <option value="20">20</option>
                 </select>
                 <div>Entries</div>
@@ -88,7 +98,11 @@
                       : 'page-item'
                   "
                 >
-                  <a class="page-link" href="#" @click.prevent="search(data_buku.current_page - 1)">
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="search(data_buku.current_page - 1)"
+                  >
                     <span class="fa fa-angle-double-left"></span>
                   </a>
                 </li>
@@ -111,7 +125,8 @@
                         ? ''
                         : search(halaman)
                     "
-                  >{{ halaman }}</a>
+                    >{{ halaman }}</a
+                  >
                 </li>
                 <li
                   :class="
@@ -120,7 +135,11 @@
                       : 'page-item'
                   "
                 >
-                  <a class="page-link" href="#" @click.prevent="search(data_buku.current_page + 1)">
+                  <a
+                    class="page-link"
+                    href="#"
+                    @click.prevent="search(data_buku.current_page + 1)"
+                  >
                     <span class="fa fa-angle-double-right"></span>
                   </a>
                 </li>
@@ -130,7 +149,8 @@
         </div>
       </div>
     </div>
-    <buku_ModalAdd v-on:reload="search" />
+    <!--modal start-->
+    <modalAdd v-on:reload="search" />
     <modalInfo
       v-on:reload="search"
       v-for="(buku, i) in data_buku.data"
@@ -151,7 +171,7 @@
 import { searchMixin } from "../mixins/searchMixin.js";
 import { paginationMixin } from "../mixins/paginationMixin.js";
 import modalInfo from "./modal/modal-info.vue";
-import buku_ModalAdd from "./modal/modal-add.vue";
+import modalAdd from "./modal/modal-add.vue";
 import modalPinjam from "./modal/modal-pinjam.vue";
 
 export default {
@@ -159,7 +179,7 @@ export default {
 
   components: {
     modalInfo,
-    buku_ModalAdd,
+    modalAdd,
     modalPinjam
   },
 

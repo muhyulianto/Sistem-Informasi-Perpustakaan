@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 $factory->define(App\Peminjaman::class, function (Faker $faker) {
-    $date = $faker->dateTimeBetween($startDate = '-1 months', $endDate = '- 1 days', $timezone = null);
+    $date = $faker->dateTimeBetween($startDate = '-1 weeks', $endDate = '- 1 days', $timezone = null);
     return [
       'id_user' => User::all()->random()->id,
       'id_buku' => Buku::all()->random()->id,

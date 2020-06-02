@@ -18,7 +18,7 @@ Route::prefix('auth')->group(function () {
     // Create New User
     Route::post('register', 'AuthController@register');
     // Login User
-    Route::post('login', 'AuthController@login');
+    Route::post('login', 'AuthController@login')->name('login');
     // Refresh the JWT Token
     Route::get('refresh', 'AuthController@refresh');
     // Below mention routes are available only for the authenticated users.
@@ -31,8 +31,9 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::group(['middleware' => 'auth:api'], function(){
-    Route::get('users', 'UserController@index')->middleware('isAdmin');
-    Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
+    Route::get('/users', 'UserController@index');
+    Route::post('/user', 'UserController@user');
+    Route::post('/user/{id}', 'PeminjamanController@chartDataUser');
 
     Route::resource('data', 'DataController');
     Route::resource('peminjaman', 'PeminjamanController');
@@ -42,5 +43,5 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('/dashboard/pinjam_user', 'PeminjamanController@dashboard_user');
 
     Route::post('/kembalikanBuku', 'PeminjamanController@kembalikanBuku');
-    Route::get('/pengembalian/download', 'PeminjamanController@download');
+    Route::post('/pengembalian/download', 'PeminjamanController@download');
 });

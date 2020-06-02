@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 
         factory(App\User::class, 10)->create();
         factory(App\Buku::class, 50)->create();
-        factory(App\Peminjaman::class, 50)->create();
+        factory(App\Peminjaman::class, 90)->create();
 
     }
 }

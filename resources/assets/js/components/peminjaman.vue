@@ -109,9 +109,7 @@
                   v-model="data_entries"
                   class="form-control form-control-sm mx-2"
                   id="entry-show"
-                  @change="
-                    fetchPeminjaman({ page: data_peminjaman.current_page })
-                  "
+                  @change="fetchPeminjaman({})"
                 >
                   <option value="10">10</option>
                   <option value="15">15</option>
