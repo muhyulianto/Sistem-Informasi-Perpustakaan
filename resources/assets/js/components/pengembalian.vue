@@ -30,7 +30,7 @@
               </button>
             </span>
           </form>
-          <a href="#" v-on:click.prevent="downloadPengembalian">
+          <a class="ml-3" href="#" v-on:click.prevent="downloadPengembalian">
             <span class="fa fa-download"></span> Download data
           </a>
         </div>

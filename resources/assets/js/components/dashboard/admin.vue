@@ -18,7 +18,9 @@
           Jumlah user yang meminjam buku hari ini
         </div>
         <div class="card-body">
-          <h5>{{ pinjam != "" ? pinjam + " User" : "-" }}</h5>
+          <h5 class="font-weight-bold">
+            {{ pinjam != "" ? pinjam + " User" : "-" }}
+          </h5>
         </div>
       </div>
     </div>
@@ -28,7 +30,7 @@
           Buku yang paling sering di pinjam
         </div>
         <div class="card-body">
-          <h5 class="text-truncate">
+          <h5 class="text-truncate font-weight-bold">
             {{ bukuPalingDiPinjam != "" ? bukuPalingDiPinjam : "-" }}
           </h5>
         </div>
@@ -40,7 +42,7 @@
           User yang paling sering meminjam buku
         </div>
         <div class="card-body">
-          <h5 class="text-truncate">
+          <h5 class="text-truncate font-weight-bold">
             {{ userPalingMeminjam != "" ? userPalingMeminjam : "-" }}
           </h5>
         </div>
