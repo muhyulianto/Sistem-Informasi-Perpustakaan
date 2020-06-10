@@ -41,7 +41,13 @@ Anda bisa baca selengkapnya disini <a href="https://laravel.com/docs/5.5#server-
 
 ## Screenshot
 
+### Dashboard
+
 ![Dashboard](./Dashboard.png)
+
+### Data
+
+![Data](./Data.png)
 
 ## Built With
 
