@@ -3,7 +3,9 @@ export const peminjamanMixin = {
     return {
       data_peminjaman: {},
       data_entries: 10,
-      search_query: "",
+      search_query: null,
+      orderBy: null,
+      orderDirection: null
     };
   },
 
@@ -16,7 +18,7 @@ export const peminjamanMixin = {
     },
 
     async fetchPeminjaman(data) {
-      const { page, pengembalian, search_query, id_user } = data;
+      const { page, pengembalian, id_user } = data;
       this.$store.commit("TOGGLE_LOADING", true);
       let tunggu = await this.checkRole();
       axios
@@ -27,11 +29,13 @@ export const peminjamanMixin = {
             page: page,
             entries: this.data_entries,
             pengembalian: pengembalian,
-            search_query: search_query,
-            id_user: id_user
-          },
+            search_query: this.search_query,
+            id_user: id_user,
+            orderBy: this.orderBy,
+            orderDirection: this.orderDirection
+          }
         })
-        .then((response) => {
+        .then(response => {
           this.data_peminjaman = response.data.data_peminjaman;
           this.data_pagination = this.getPagesArray(
             this.data_peminjaman.total,
@@ -46,5 +50,14 @@ export const peminjamanMixin = {
       this.search_query = "";
       this.fetchPeminjaman({});
     },
-  },
+
+    sort({ orderBy, pengembalian }) {
+      this.orderBy = orderBy;
+      this.orderDirection = this.orderDirection == "DESC" ? "ASC" : "DESC";
+      this.fetchPeminjaman({
+        page: this.data_peminjaman.current_page,
+        pengembalian: pengembalian
+      });
+    }
+  }
 };

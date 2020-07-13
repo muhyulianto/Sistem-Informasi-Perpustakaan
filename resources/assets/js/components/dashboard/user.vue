@@ -1,12 +1,5 @@
 <template>
   <div class="row">
-    <div class="col-lg-12 mb-4">
-      <div class="card bg-primary text-white shadow-sm">
-        <div class="card-body text-center font-weight-bold">
-          SELAMAT DATANG DI SISTEM INFORMASI PERPUSTAKAAN SDN 100 KONOHAGAKURE
-        </div>
-      </div>
-    </div>
     <div class="col-lg-3">
       <div class="card mb-4 shadow-sm">
         <div class="card-header text-muted">
@@ -104,9 +97,13 @@ export default {
           this.jumlah_pinjam = response.data.jumlah_pinjam_all;
           this.jumlah_pinjam_hari_ini = response.data.jumlah_pinjam_hari_ini;
           this.sering_dipinjam =
-            response.data.buku_sering_dipinjam.buku.judul_buku;
+            response.data.buku_sering_dipinjam == null
+              ? "-"
+              : response.data.buku_sering_dipinjam.buku.judul_buku;
           this.terakhir_dipinjam =
-            response.data.buku_terakhir_dipinjam.buku.judul_buku;
+            response.data.buku_terakhir_dipinjam == null
+              ? "-"
+              : response.data.buku_terakhir_dipinjam.buku.judul_buku;
           this.daftar_buku_baru = response.data.daftar_buku_baru;
           this.$store.commit("TOGGLE_LOADING", false);
         });

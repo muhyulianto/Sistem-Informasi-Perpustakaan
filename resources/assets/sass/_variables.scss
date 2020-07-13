@@ -17,19 +17,19 @@ $gray-800: #333 !default;
 $gray-900: #222 !default;
 $black: #000 !default;
 
-$blue: #008cba !default;
-$indigo: #6610f2 !default;
-$purple: #6f42c1 !default;
-$pink: #e83e8c !default;
-$red: #f04124 !default;
-$orange: #fd7e14 !default;
-$yellow: #e99002 !default;
-$green: #43ac6a !default;
-$teal: #20c997 !default;
-$cyan: #5bc0de !default;
+$blue: #2196f3 !default;
+$indigo: #3f51b5 !default;
+$purple: #9c27b0 !default;
+$pink: #e91e63 !default;
+$red: #f44336 !default;
+$orange: #ff9800 !default;
+$yellow: #ffc107 !default;
+$green: #4caf50 !default;
+$teal: #009688 !default;
+$cyan: #00bcd4 !default;
 
 $primary: $blue !default;
-$secondary: $gray-300 !default;
+$secondary: $gray-400 !default;
 $success: $green !default;
 $info: $cyan !default;
 $warning: $yellow !default;
@@ -50,9 +50,9 @@ $transition-fade: opacity 0.15s linear !default;
 
 // Components
 
-$border-radius: 0 !default;
-$border-radius-lg: 0 !default;
-$border-radius-sm: 0 !default;
+//$border-radius: 0 !default;
+//$border-radius-lg: 0 !default;
+//$border-radius-sm: 0 !default;
 
 // Fonts
 
@@ -67,8 +67,7 @@ $headings-font-weight: 300 !default;
 // Buttons
 
 $input-btn-padding-x: 0.5rem !default;
-
-$btn-font-weight: 300 !default;
+$btn-font-weight: 500 !default;
 
 // Dropdowns
 
@@ -103,7 +102,7 @@ $jumbotron-padding: 4rem !default;
 
 // Cards
 
-$card-inner-border-radius: 0px !default;
+//$card-inner-border-radius: 0px !default;
 $card-cap-bg: $white;
 $card-border-width: 0;
 
@@ -182,3 +181,7 @@ $modal-fade-transform: scale(0.9) !default;
 
 // Form
 $input-border-color: $gray-300;
+
+// shadow
+$box-shadow-sm: 0 5px 15px rgba(57, 98, 254, 0.02),
+  0 3px 6px rgba(117, 108, 254, 0.12);

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col">
-      <div class="card">
+      <div class="card shadow-sm">
         <div class="card-header d-flex flex-wrap align-items-end">
           <div class="card-title font-weight-bold text-uppercase mb-0 py-1">
             Data peminjaman
@@ -12,7 +12,6 @@
           <form
             v-on:submit.prevent="
               fetchPeminjaman({
-                search_query: search_query,
                 pengembalian: true
               })
             "
@@ -39,10 +38,181 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th v-if="$auth.user().role == 2">Nama user</th>
-                <th>judul buku</th>
-                <th>Tanggal pinjam</th>
-                <th>Dikembalikan</th>
+                <th v-if="$auth.check(2)">
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="
+                      sort({ orderBy: 'name', pengembalian: true })
+                    "
+                  >
+                    <i
+                      v-if="orderDirection == 'DESC' && orderBy == 'name'"
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="orderDirection == 'ASC' && orderBy == 'name'"
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Nama user
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="
+                      sort({ orderBy: 'judul_buku', pengembalian: true })
+                    "
+                  >
+                    <i
+                      v-if="orderDirection == 'DESC' && orderBy == 'judul_buku'"
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="
+                        orderDirection == 'ASC' && orderBy == 'judul_buku'
+                      "
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Judul buku
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="
+                      sort({ orderBy: 'tanggal_pinjam', pengembalian: true })
+                    "
+                  >
+                    <i
+                      v-if="
+                        orderDirection == 'DESC' && orderBy == 'tanggal_pinjam'
+                      "
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="
+                        orderDirection == 'ASC' && orderBy == 'tanggal_pinjam'
+                      "
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Tanggal pinjam
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="
+                      sort({ orderBy: 'tanggal_kembali', pengembalian: true })
+                    "
+                  >
+                    <i
+                      v-if="
+                        orderDirection == 'DESC' && orderBy == 'tanggal_kembali'
+                      "
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="
+                        orderDirection == 'ASC' && orderBy == 'tanggal_kembali'
+                      "
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Tanggal kembali
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="
+                      sort({
+                        orderBy: 'dikembalikan_tanggal',
+                        pengembalian: true
+                      })
+                    "
+                  >
+                    <i
+                      v-if="
+                        orderDirection == 'DESC' &&
+                          orderBy == 'dikembalikan_tanggal'
+                      "
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="
+                        orderDirection == 'ASC' &&
+                          orderBy == 'dikembalikan_tanggal'
+                      "
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Dikembalikan
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="
+                      sort({ orderBy: 'telat', pengembalian: true })
+                    "
+                  >
+                    <i
+                      v-if="orderDirection == 'DESC' && orderBy == 'telat'"
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="orderDirection == 'ASC' && orderBy == 'telat'"
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Terlambat
+                  </a>
+                </th>
                 <th>Denda</th>
               </tr>
             </thead>
@@ -50,40 +220,33 @@
               <tr v-for="(kembali, i) in data_peminjaman.data" v-bind:key="i">
                 <td>{{ data_peminjaman.from + i }}</td>
                 <td v-if="$auth.user().role == 2">
-                  <a
-                    href
-                    data-toggle="modal"
-                    :data-target="'#info__user' + kembali.id_user"
-                    >{{ kembali.user.name }}</a
+                  <router-link
+                    :to="{ name: 'userShow', params: { id: kembali.user.id } }"
                   >
+                    {{ kembali.user.name }}
+                  </router-link>
                 </td>
                 <td>
-                  <a
-                    href
-                    data-toggle="modal"
-                    :data-target="'#info__buku' + kembali.id_buku"
-                    >{{ kembali.buku.judul_buku }}</a
+                  <router-link
+                    :to="{
+                      name: 'detailBuku',
+                      params: { id: kembali.buku.id }
+                    }"
                   >
+                    {{ kembali.buku.judul_buku }}
+                  </router-link>
                 </td>
                 <td>{{ kembali.tanggal_pinjam | moment("DD MMMM YYYY") }}</td>
                 <td>
-                  <!-- prettier-ignore -->
-                  <a
-                    href="#"
-                    @click.prevent
-                    type="button"
-                    data-toggle="popover"
-                    data-html="true"
-                    data-placement="bottom"
-                    data-title="
-                      Keterangan
-                    "
-                    :data-content="
-                    'Tanggal kembali: ' + moment(kembali.tanggal_kembali).format('DD MMMM YYYY')
-                    + '<br/>' + 
-                    'Terlambat: ' + kembali.telat + ' Hari'
-                    "
-                  >{{ kembali.dikembalikan_tanggal | moment("DD MMMM YYYY") }}</a>
+                  {{ kembali.tanggal_kembali | moment("DD MMMM YYYY") }}
+                </td>
+                <td>
+                  {{ kembali.dikembalikan_tanggal | moment("DD MMMM YYYY") }}
+                </td>
+                <td>
+                  {{
+                    kembali.telat == 0 ? "tepat waktu" : kembali.telat + " Hari"
+                  }}
                 </td>
                 <td>Rp.{{ kembali.denda }},-</td>
               </tr>
@@ -165,22 +328,6 @@
               </ul>
             </div>
           </div>
-          <modalUser
-            v-for="(info_user, j) in data_peminjaman.data"
-            :key="'info_user' + j"
-            :parentData="info_user"
-          />
-          <div
-            class="modal-info"
-            v-for="(data, h) in data_peminjaman.data"
-            :key="h"
-          >
-            <modalInfo
-              :key="'info_buku' + h"
-              v-bind:isPeminjaman="true"
-              :parentData="data.buku"
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -189,38 +336,12 @@
 <script>
 import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
 import { paginationMixin } from "../mixins/paginationMixin.js";
-import modalUser from "./modal/modal-user.vue";
-import modalInfo from "./modal/modal-info.vue";
 
 export default {
   mixins: [paginationMixin, peminjamanMixin],
 
-  components: {
-    modalUser,
-    modalInfo
-  },
-
   mounted() {
     this.fetchPeminjaman({ search_query: "", pengembalian: true });
-  },
-
-  updated: function() {
-    $(function() {
-      $('[data-toggle="popover"]').popover();
-    });
-
-    $("body").on("click", function(e) {
-      $("[data-toggle=popover]").each(function() {
-        // hide any open popovers when the anywhere else in the body is clicked
-        if (
-          !$(this).is(e.target) &&
-          $(this).has(e.target).length === 0 &&
-          $(".popover").has(e.target).length === 0
-        ) {
-          $(this).popover("hide");
-        }
-      });
-    });
   },
 
   methods: {

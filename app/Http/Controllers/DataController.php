@@ -19,17 +19,20 @@ class DataController extends Controller
      */
     public function index(Request $request)
     {
+        $orderBy = $request->orderBy ? $request->orderBy : 'created_at';
+        $orderDirection = $request->orderDirection;
+
         $Bukus = Buku::where('judul_buku','like','%'.$request->search_query.'%')
             ->orWhere('pengarang', 'like', '%'.$request->search_query.'%')
             ->orWhere('tahun_terbit', 'like', '%'.$request->search_query.'%')
             ->orWhere('penerbit', 'like', '%'.$request->search_query.'%')
             ->orWhere('lokasi_rak', 'like', '%'.$request->search_query.'%')
             ->orWhere('jenis_buku', 'like', '%'.$request->search_query.'%')
-            ->orderBy('judul_buku')
+            ->orderBy($orderBy, $orderDirection)
             ->paginate($request->entries);
 
         return response()->json([
-            'data_buku' => $Bukus->appends($request->only('search_query'))
+            'data_buku' => $Bukus->appends($request->only('search_query')),
         ]);
     }
 
@@ -56,7 +59,7 @@ class DataController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'judul_buku' => 'unique:bukus,judul_buku',
+            'judul_buku' => 'required|unique:bukus,judul_buku',
         ], $messages);
 
         if ($validator->fails()) {
@@ -66,8 +69,14 @@ class DataController extends Controller
             ], 422);
         }
 
-        $fileImage = $request->file('image');
-        $fileImage->move(base_path('/public/uploads'), $fileImage->getClientOriginalName());
+        if ($request->hasFile('image')) {
+            $fileImage = $request->file('image');
+            $fileName = $fileImage->getClientOriginalName();
+            $fileImage->move(base_path('/public/uploads'), $fileName);
+        } else {
+            $fileName = 'placeholder.jpg';
+        }
+
         Buku::create([
           'judul_buku' => $request->judul_buku,
           'pengarang' => $request->pengarang,
@@ -75,8 +84,9 @@ class DataController extends Controller
           'penerbit' => $request->penerbit,
           'jenis_buku' => $request->jenis_buku,
           'lokasi_rak' => $request->lokasi_rak,
-          'namaGambar' => $fileImage->getClientOriginalName()
+          'namaGambar' => $fileName
         ]);
+
         return response()->json(['berhasil' => "Data telah di tambahkan"]);
     }
 

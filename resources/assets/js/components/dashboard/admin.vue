@@ -88,7 +88,7 @@ export default {
           response.data.bukuPalingBanyakPinjam.buku.judul_buku;
         this.userPalingMeminjam =
           response.data.userPalingBanyakMeminjam.user.name;
-        this.daftar_buku_baru = $response.data.daftar_buku_baru;
+        this.daftar_buku_baru = response.data.daftar_buku_baru;
       });
     },
 

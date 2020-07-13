@@ -10,63 +10,84 @@
             Reset pencarian
           </button>
           <form v-on:submit.prevent="search()" class="input-group w-25 ml-2">
-            <input
-              type="search"
-              class="form-control form-control-sm"
-              v-model="search_query"
-              required
-            />
-            <span class="input-group-btn">
-              <button class="btn btn-primary btn-sm" type="submit">
-                <span class="fa fa-search" aria-hidden="true"></span> cari
-              </button>
-            </span>
+            <div class="input-group">
+              <input
+                type="search"
+                class="form-control form-control-sm"
+                v-model="search_query"
+                required
+              />
+              <span class="input-group-append">
+                <button class="btn btn-primary btn-sm" type="submit">
+                  <span class="fa fa-search" aria-hidden="true"></span> cari
+                </button>
+              </span>
+            </div>
           </form>
-          <button
+          <router-link
+            :to="{ name: 'tambahBuku' }"
             class="btn btn-primary btn-sm ml-2"
-            data-toggle="modal"
-            data-target="#tambah_data"
-            v-if="$auth.user().role == 2"
+            v-if="$auth.check(2)"
           >
-            <span class="fa fa-plus"></span>
-            Tambah data
-          </button>
+            Tambah buku
+          </router-link>
         </div>
         <div class="card-body">
           <table class="table table-no-border-top">
             <thead>
               <tr>
                 <th style="width: 50px">No</th>
-                <th>Nama buku</th>
-                <th style="width: 150px">Aksi</th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="sort({ orderBy: 'judul_buku' })"
+                  >
+                    <i
+                      v-if="orderDirection == 'DESC'"
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="orderDirection == 'ASC'"
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Nama buku
+                  </a>
+                </th>
+                <th class="text-right">Aksi</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(buku, i) in data_buku.data" v-bind:key="i">
                 <td>{{ data_buku.from + i }}</td>
                 <td>{{ buku.judul_buku }}</td>
-                <td>
-                  <button
-                    class="btn btn-primary btn-sm px-3"
-                    data-toggle="modal"
-                    :data-target="'#info__buku' + buku.id"
+                <td class="text-right">
+                  <router-link
+                    class="btn btn-primary btn-sm"
+                    :to="{ name: 'detailBuku', params: { id: buku.id } }"
                   >
-                    Info
-                  </button>
+                    Detail
+                  </router-link>
+                  <router-link
+                    v-if="$auth.check(2)"
+                    class="btn btn-success btn-sm"
+                    :to="{ name: 'pinjamBuku', params: { id: buku.id } }"
+                  >
+                    Pinjam
+                  </router-link>
                   <button
                     class="btn btn-danger btn-sm"
-                    v-if="$auth.user().role == 2"
+                    v-if="$auth.check(2)"
                     @click="hapus(buku.id)"
                   >
                     Hapus
-                  </button>
-                  <button
-                    class="btn btn-success btn-sm"
-                    v-if="$auth.user().role == 1"
-                    data-toggle="modal"
-                    :data-target="'#pinjam' + buku.id"
-                  >
-                    Pinjam
                   </button>
                 </td>
               </tr>
@@ -149,39 +170,15 @@
         </div>
       </div>
     </div>
-    <!--modal start-->
-    <modalAdd v-on:reload="search" />
-    <modalInfo
-      v-on:reload="search"
-      v-for="(buku, i) in data_buku.data"
-      :key="'info' + i"
-      :parentData="buku"
-    />
-    <modalPinjam
-      v-on:reload="search"
-      v-for="(buku, i) in data_buku.data"
-      :key="'pinjam' + i"
-      :parentData="buku"
-    />
-    <!-- Modal end -->
   </div>
 </template>
 
 <script>
 import { searchMixin } from "../mixins/searchMixin.js";
 import { paginationMixin } from "../mixins/paginationMixin.js";
-import modalInfo from "./modal/modal-info.vue";
-import modalAdd from "./modal/modal-add.vue";
-import modalPinjam from "./modal/modal-pinjam.vue";
 
 export default {
   mixins: [searchMixin, paginationMixin],
-
-  components: {
-    modalInfo,
-    modalAdd,
-    modalPinjam
-  },
 
   mounted() {
     this.search();
@@ -221,6 +218,12 @@ export default {
             });
         }
       });
+    },
+
+    sort({ orderBy }) {
+      this.orderBy = orderBy;
+      this.orderDirection = this.orderDirection == "DESC" ? "ASC" : "DESC";
+      this.search();
     }
   }
 };

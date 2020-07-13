@@ -30,6 +30,7 @@
                 <th class="border-top-0" style="width: 5%">No</th>
                 <th class="border-top-0">Nama user</th>
                 <th class="border-top-0">Email</th>
+                <th class="border-top-0">Kelas</th>
                 <th class="border-top-0" style="width: 10%">Aksi</th>
               </tr>
             </thead>
@@ -43,6 +44,9 @@
                 </td>
                 <td>
                   {{ user.email }}
+                </td>
+                <td>
+                  {{ user.kelas }}
                 </td>
                 <td>
                   <router-link

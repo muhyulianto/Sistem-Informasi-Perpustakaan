@@ -2,8 +2,15 @@
   <div class="row">
     <div class="col-lg-6">
       <div class="card mb-4 shadow-sm">
-        <div class="card-header border-0">
-          <div class="card-title font-weight-bold">
+        <div class="card-header border-0 d-flex align-items-center">
+          <a
+            href=""
+            class="btn btn-primary btn-sm mr-2"
+            @click.prevent="$router.go(-1)"
+          >
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          </a>
+          <div class="card-title font-weight-bold m-0">
             Informasi siswa
           </div>
         </div>
@@ -19,6 +26,12 @@
               <td>E-mail</td>
               <td class="text-right font-weight-bold">
                 {{ userData.email }}
+              </td>
+            </tr>
+            <tr>
+              <td>Kelas</td>
+              <td class="text-right font-weight-bold">
+                {{ userData.kelas == null ? "-" : userData.kelas }}
               </td>
             </tr>
           </table>

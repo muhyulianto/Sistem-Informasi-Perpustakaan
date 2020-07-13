@@ -22,20 +22,31 @@ class PeminjamanController extends Controller
         // jika bukan admin
         if ($request->has('id')){
 
-            $peminjaman = Peminjaman::with(['user', 'buku'])
-                ->where('id_user', $request->id)
-                ->whereNull('dikembalikan_tanggal')
-                ->orderBy('created_at', 'desc')
+            $orderBy = $request->orderBy ? $request->orderBy : 'created_at';
+            $orderDirection = $request->orderDirection;
+
+            $peminjaman = peminjaman::with(['user', 'buku'])
+                ->join('users', 'peminjamen.id_user', '=', 'users.id')
+                ->join('bukus', 'peminjamen.id_buku', '=', 'bukus.id')
+                ->select('users.name', 'bukus.judul_buku', 'peminjamen.*')
+                ->where(function($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->search_query}%");
+                    $query->orWhere('judul_buku', 'like', "%{$request->search_query}%");
+                })
+            ->where('id_user', $request->id)
+            ->whereNull('dikembalikan_tanggal')
+                ->orderBy($orderBy, $orderDirection)
                 ->paginate($request->entries);
 
             return response()->json([
-                'data_peminjaman' => $peminjaman
+              'data_peminjaman' => $peminjaman
             ]);
 
         }
 
         // Jika admin
         else {
+
             // mengambil buku yang sudah dikembalikan
             if ($request->has('pengembalian')) {
                 // Mengambil riwayat peminjaman terakhir user yang dipilih
@@ -50,15 +61,20 @@ class PeminjamanController extends Controller
                     ]);
                 }
 
+                $orderBy = $request->orderBy ? $request->orderBy : 'created_at';
+                $orderDirection = $request->orderDirection;
+
                 $peminjaman = peminjaman::with(['user', 'buku'])
-                    ->whereHas('user', function($query) use ($request){
-                        $query->where('name', 'like', "%{$request->search_query}%")
-                        ->whereNotNull('dikembalikan_tanggal');
-                    })->orWhereHas('buku', function ($query) use ($request) {
-                        $query->where('judul_buku', 'like',  "%{$request->search_query}%")
-                        ->whereNotNull('dikembalikan_tanggal');
+                    ->join('users', 'peminjamen.id_user', '=', 'users.id')
+                    ->join('bukus', 'peminjamen.id_buku', '=', 'bukus.id')
+                    ->select('users.name', 'bukus.judul_buku', 'peminjamen.*')
+                    ->where(function($query) use ($request) {
+                        $query->where('name', 'like', "%{$request->search_query}%");
+                        $query->orWhere('judul_buku', 'like', "%{$request->search_query}%");
                     })
-                    ->orderBy('created_at', 'desc')->paginate($request->entries);
+                    ->whereNotNull('dikembalikan_tanggal')
+                    ->orderBy($orderBy, $orderDirection)
+                    ->paginate($request->entries);
 
                 return response()->json([
                   'data_peminjaman' => $peminjaman
@@ -66,18 +82,23 @@ class PeminjamanController extends Controller
             }
             
             // mengambil buku belum dikembalikan
+            $orderBy = $request->orderBy ? $request->orderBy : 'created_at';
+            $orderDirection = $request->orderDirection;
+
             $peminjaman = peminjaman::with(['user', 'buku'])
-                ->whereHas('user', function($query) use ($request){
-                    $query->where('name', 'like', "%{$request->search_query}%")
-                    ->whereNull('dikembalikan_tanggal');
-                })->orWhereHas('buku', function ($query) use ($request) {
-                    $query->where('judul_buku', 'like',  "%{$request->search_query}%")
-                    ->whereNull('dikembalikan_tanggal');
+                ->join('users', 'peminjamen.id_user', '=', 'users.id')
+                ->join('bukus', 'peminjamen.id_buku', '=', 'bukus.id')
+                ->select('users.name', 'bukus.judul_buku', 'peminjamen.*')
+                ->where(function($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->search_query}%");
+                    $query->orWhere('judul_buku', 'like', "%{$request->search_query}%");
                 })
-                ->orderBy('created_at', 'desc')->paginate($request->entries);
+                ->whereNull('dikembalikan_tanggal')
+                ->orderBy($orderBy, $orderDirection)
+                ->paginate($request->entries);
 
             return response()->json([
-              'data_peminjaman' => $peminjaman
+                'data_peminjaman' => $peminjaman,
             ]);
 
         }
@@ -184,6 +205,8 @@ class PeminjamanController extends Controller
         }
 
         Peminjaman::create($request->all());
+
+        return response()->json(['success' => 'Data telah ditambahkan!'], 200);
     }
 
     /**

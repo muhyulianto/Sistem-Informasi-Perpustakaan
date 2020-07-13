@@ -33,7 +33,7 @@
           class="menu__item"
           v-if="$auth.user().role == 2"
           :to="{ name: 'user' }"
-          >User</router-link
+          >Data user</router-link
         >
         <a class="menu__item" href="#" @click.prevent="$auth.logout()"
           >Logout</a

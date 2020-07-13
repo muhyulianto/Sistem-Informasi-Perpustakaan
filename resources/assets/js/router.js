@@ -4,6 +4,9 @@ import Login from "./components/auth/login";
 import Index from "./components/index";
 import Dashboard from "./components/dashboard";
 import Buku from "./components/buku";
+import tambahBuku from "./components/tambahBuku.vue";
+import detailBuku from "./components/detailBuku";
+import PinjamBuku from "./components/pinjamBuku";
 import Peminjaman from "./components/peminjaman";
 import Pengembalian from "./components/pengembalian";
 import User from "./components/user";
@@ -16,22 +19,28 @@ import notFound from "./components/404";
 export const routes = [
   {
     path: "*/404",
-    component: notFound,
+    component: notFound
   },
   {
     path: "/",
     component: unAuthorizedLayout,
     meta: { auth: false },
     children: [
-      { path: "", name: "index", component: Index, meta: { auth: false } },
-      { path: "login", name: "login", component: Login, meta: { auth: false } },
+      { 
+        path: "",
+        name: "index",
+        component: Index,
+      },
+      { path: "login",
+        name: "login",
+        component: Login,
+      },
       {
         path: "register",
         name: "register",
         component: Register,
-        meta: { auth: false },
-      },
-    ],
+      }
+    ]
   },
   {
     path: "/",
@@ -41,26 +50,42 @@ export const routes = [
       {
         path: "dashboard",
         name: "dashboard",
-        component: Dashboard,
-        meta: { auth: true },
+        component: Dashboard
       },
-      { path: "buku", name: "buku", component: Buku, meta: { auth: true } },
+      {
+        path: "buku",
+        name: "buku",
+        component: Buku
+      },
+      {
+        path: "buku/tambah",
+        name: "tambahBuku",
+        component: tambahBuku
+      },
+      {
+        path: "buku/:id",
+        name: "detailBuku",
+        component: detailBuku
+      },
+      {
+        path: "buku/pinjam/:id",
+        name: "pinjamBuku",
+        component: PinjamBuku
+      },
       {
         path: "peminjaman",
         name: "peminjaman",
-        component: Peminjaman,
-        meta: { auth: true },
+        component: Peminjaman
       },
       {
         path: "pengembalian",
         name: "pengembalian",
-        component: Pengembalian,
-        meta: { auth: true },
+        component: Pengembalian
       },
       {
         path: "user",
         name: "user",
-        component: User,
+        component: User
       },
       {
         path: "user/:id",
@@ -68,6 +93,6 @@ export const routes = [
         component: userShow,
         props: true
       }
-    ],
-  },
+    ]
+  }
 ];

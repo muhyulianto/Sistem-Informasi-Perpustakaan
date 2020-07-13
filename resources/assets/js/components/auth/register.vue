@@ -35,9 +35,20 @@
                 v-model="name"
                 required
               />
-              <span class="help-block" v-if="error && errors.name">{{
+              <small class="text-danger" v-if="error && errors.name">{{
                 errors.name
-              }}</span>
+              }}</small>
+            </div>
+            <div class="form-group">
+              <label for="kelas">
+                Kelas
+              </label>
+              <input
+                v-model="kelas"
+                class="form-control"
+                type="text"
+                required
+              />
             </div>
             <div
               class="form-group"
@@ -51,9 +62,9 @@
                 v-model="email"
                 required
               />
-              <span class="help-block" v-if="error && errors.email">{{
+              <small class="text-danger" v-if="error && errors.email">{{
                 errors.email
-              }}</span>
+              }}</small>
             </div>
             <div
               class="form-group"
@@ -67,9 +78,9 @@
                 v-model="password"
                 required
               />
-              <span class="help-block" v-if="error && errors.password">{{
+              <small class="text-danger" v-if="error && errors.password">{{
                 errors.password
-              }}</span>
+              }}</small>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
@@ -85,6 +96,7 @@ export default {
       name: "",
       email: "",
       password: "",
+      kelas: "",
       error: false,
       errors: "",
       success: false
@@ -98,7 +110,8 @@ export default {
         data: {
           name: app.name,
           email: app.email,
-          password: app.password
+          password: app.password,
+          kelas: app.kelas
         },
         success: function() {
           app.success = true;

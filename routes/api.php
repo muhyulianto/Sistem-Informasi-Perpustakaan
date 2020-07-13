@@ -30,12 +30,13 @@ Route::prefix('auth')->group(function () {
     });
 });
 
+Route::resource('data', 'DataController');
+
 Route::group(['middleware' => 'auth:api'], function(){
     Route::get('/users', 'UserController@index');
     Route::post('/user', 'UserController@user');
     Route::post('/user/{id}', 'PeminjamanController@chartDataUser');
 
-    Route::resource('data', 'DataController');
     Route::resource('peminjaman', 'PeminjamanController');
 
     Route::post('/dashboard/pinjam', 'PeminjamanController@dashboard');

@@ -10,22 +10,22 @@
             Reset pencarian
           </button>
           <form
-            v-on:submit.prevent="
-              fetchPeminjaman({ search_query: search_query })
-            "
+            v-on:submit.prevent="fetchPeminjaman({})"
             class="input-group w-25 ml-2"
           >
-            <input
-              type="search"
-              class="form-control form-control-sm"
-              v-model="search_query"
-              required
-            />
-            <span class="input-group-btn">
-              <button class="btn btn-primary btn-sm" type="submit">
-                <span class="fa fa-search" aria-hidden="true"></span> search!
-              </button>
-            </span>
+            <div class="input-group">
+              <input
+                type="search"
+                class="form-control form-control-sm"
+                v-model="search_query"
+                required
+              />
+              <span class="input-group-append">
+                <button class="btn btn-primary btn-sm" type="submit">
+                  <span class="fa fa-search" aria-hidden="true"></span> search!
+                </button>
+              </span>
+            </div>
           </form>
         </div>
         <div class="card-body">
@@ -33,32 +33,132 @@
             <thead>
               <tr>
                 <th>No</th>
-                <th v-if="$auth.user().role == 2">Nama user</th>
-                <th>Judul buku</th>
-                <th>Tanggal pinjam</th>
-                <th>Tanggal kembali</th>
+                <th v-if="$auth.check(2)">
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="sort({ orderBy: 'name' })"
+                  >
+                    <i
+                      v-if="orderDirection == 'DESC' && orderBy == 'name'"
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="orderDirection == 'ASC' && orderBy == 'name'"
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Nama user
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="sort({ orderBy: 'judul_buku' })"
+                  >
+                    <i
+                      v-if="orderDirection == 'DESC' && orderBy == 'judul_buku'"
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="
+                        orderDirection == 'ASC' && orderBy == 'judul_buku'
+                      "
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Judul buku
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="sort({ orderBy: 'tanggal_pinjam' })"
+                  >
+                    <i
+                      v-if="
+                        orderDirection == 'DESC' && orderBy == 'tanggal_pinjam'
+                      "
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="
+                        orderDirection == 'ASC' && orderBy == 'tanggal_pinjam'
+                      "
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Tanggal pinjam
+                  </a>
+                </th>
+                <th>
+                  <a
+                    class="text-dark"
+                    href=""
+                    @click.prevent="sort({ orderBy: 'tanggal_kembali' })"
+                  >
+                    <i
+                      v-if="
+                        orderDirection == 'DESC' && orderBy == 'tanggal_kembali'
+                      "
+                      class="fa fa-sort-desc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else-if="
+                        orderDirection == 'ASC' && orderBy == 'tanggal_kembali'
+                      "
+                      class="fa fa-sort-asc"
+                      aria-hidden="true"
+                    ></i>
+                    <i
+                      v-else
+                      class="fa fa-sort text-muted"
+                      aria-hidden="true"
+                    ></i>
+                    Tanggal kembali
+                  </a>
+                </th>
                 <th v-if="$auth.check(1)">Status</th>
-                <th v-if="$auth.user().role == 2">Aksi</th>
+                <th v-if="$auth.check(2)">Aksi</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(pinjam, i) in data_peminjaman.data" v-bind:key="i">
                 <td class="align-middle">{{ data_peminjaman.from + i }}</td>
                 <td class="align-middle" v-if="$auth.user().role == 2">
-                  <a
-                    href
-                    data-toggle="modal"
-                    :data-target="'#info__user' + pinjam.id_user"
-                    >{{ pinjam.user.name }}</a
+                  <router-link
+                    :to="{ name: 'userShow', params: { id: pinjam.user.id } }"
                   >
+                    {{ pinjam.user.name }}
+                  </router-link>
                 </td>
                 <td class="align-middle">
-                  <a
-                    href
-                    data-toggle="modal"
-                    :data-target="'#info__buku' + pinjam.id_buku"
-                    >{{ pinjam.buku.judul_buku }}</a
+                  <router-link
+                    :to="{ name: 'detailBuku', params: { id: pinjam.buku.id } }"
                   >
+                    {{ pinjam.buku.judul_buku }}
+                  </router-link>
                 </td>
                 <td class="align-middle">
                   {{ pinjam.tanggal_pinjam | moment("DD MMMM YYYY") }}
@@ -70,7 +170,7 @@
                   {{
                     pinjam.tanggal_kembali <
                     moment().format("YYYY-MM-DD HH:MM:SS")
-                      ? "Terlambat"
+                      ? "Terlambat "
                       : "Dipinjam"
                   }}
                 </td>
@@ -85,22 +185,6 @@
               </tr>
             </tbody>
           </table>
-          <div
-            class="modal-info"
-            v-for="(data, h) in data_peminjaman.data"
-            :key="h"
-          >
-            <modalInfo
-              :key="'info_buku' + h"
-              v-bind:isPeminjaman="true"
-              :parentData="data.buku"
-            />
-          </div>
-          <modalUser
-            v-for="(info_user, j) in data_peminjaman.data"
-            :key="'info_user' + j"
-            :parentData="info_user"
-          />
           <div class="row justify-content-between">
             <div class="col-lg-3">
               <div class="d-flex align-items-center ml-auto">
@@ -152,7 +236,11 @@
                     class="page-link"
                     href="#"
                     @click.prevent="
-                      halaman == '...' ? '' : fetchPeminjaman({ page: halaman })
+                      halaman == '...'
+                        ? ''
+                        : fetchPeminjaman({
+                            page: halaman
+                          })
                     "
                     >{{ halaman }}</a
                   >
@@ -181,16 +269,9 @@
 <script>
 import { peminjamanMixin } from "../mixins/peminjamanMixin.js";
 import { paginationMixin } from "../mixins/paginationMixin.js";
-import modalInfo from "./modal/modal-info.vue";
-import modalUser from "./modal/modal-user.vue";
 
 export default {
   mixins: [peminjamanMixin, paginationMixin],
-
-  components: {
-    modalInfo,
-    modalUser
-  },
 
   mounted() {
     this.fetchPeminjaman({});
