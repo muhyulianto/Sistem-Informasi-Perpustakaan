@@ -27,7 +27,7 @@
     "bootstrap-icons": "^1.0.0-alpha2",
     "chart.js": "^2.9.3",
     "es6-promise": "^4.2.8",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "vue-axios": "^2.1.5",
     "vue-chartjs": "^3.5.0",
     "vue-moment": "^4.1.0",
